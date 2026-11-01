@@ -23,6 +23,7 @@
 		9A3D8B985145530D8040B29E /* DvskStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD64DB9467BED681DD689F8 /* DvskStateTests.swift */; };
 		B6649881C4CC39806BFD7AFE /* PanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B25D25173E1312409B93504 /* PanelView.swift */; };
 		B7C9C24EFA4317AD3E8DBDB1 /* ColorTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935053CF6F5270CDD7921A97 /* ColorTemperature.swift */; };
+		BEF633EB140804AC5A3C0F56 /* CurveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F1FC48B14C84A731590108 /* CurveView.swift */; };
 		CC9587223FC17F281CC215BF /* ColorTemperatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B7ADC00ADA05A48A8E9FCF /* ColorTemperatureTests.swift */; };
 		CE9FC80A33DE40972362E8C5 /* GammaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCACBFF528537A06AECED6C8 /* GammaController.swift */; };
 		D8E0F60E1869C82021A0C579 /* KeyboardBacklight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79352A3869336C169D823690 /* KeyboardBacklight.swift */; };
@@ -78,6 +79,7 @@
 		1B25D25173E1312409B93504 /* PanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelView.swift; sourceTree = "<group>"; };
 		215BF4744361A962845848B8 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		21EFFFD0E76713297707F14E /* ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
+		30F1FC48B14C84A731590108 /* CurveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurveView.swift; sourceTree = "<group>"; };
 		3D48EBF52497A1564DB8ED43 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		3F504F3157FCAD0872EBDAD2 /* SolarTimesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarTimesTests.swift; sourceTree = "<group>"; };
 		47C363C1C2F87041AC77D946 /* SolarTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarTimes.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				D78EBBE462F5D0378E8DB1C5 /* AppDelegate.swift */,
+				30F1FC48B14C84A731590108 /* CurveView.swift */,
 				3D48EBF52497A1564DB8ED43 /* Engine.swift */,
 				FCACBFF528537A06AECED6C8 /* GammaController.swift */,
 				79352A3869336C169D823690 /* KeyboardBacklight.swift */,
@@ -344,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				237EC7575C9F81D44DDAF6EB /* AppDelegate.swift in Sources */,
+				BEF633EB140804AC5A3C0F56 /* CurveView.swift in Sources */,
 				E7154C96AA220E3FC8296C8E /* Engine.swift in Sources */,
 				CE9FC80A33DE40972362E8C5 /* GammaController.swift in Sources */,
 				D8E0F60E1869C82021A0C579 /* KeyboardBacklight.swift in Sources */,

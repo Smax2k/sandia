@@ -75,6 +75,8 @@ final class MenuController: NSObject, NSPopoverDelegate {
         syncPanel()
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
         popover.contentViewController?.view.window?.makeKey()
+        // Without this the first text field (the time picker) opens selected in blue.
+        popover.contentViewController?.view.window?.makeFirstResponder(nil)
     }
 
     func popoverDidClose(_ notification: Notification) {
