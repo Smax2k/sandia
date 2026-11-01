@@ -34,107 +34,201 @@ struct PanelView: View {
     @ObservedObject var model: PanelModel
     let actions: PanelActions
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            header
-            Divider()
+    private let panelWidth: CGFloat = 320
 
-            sliderRow("Night temperature", value: "\(Int(preferences.nightKelvin.rounded()))K") {
+    var body: some View {
+        VStack(spacing: 0) {
+            header
+            curve
+            separator
+            nightSection
+            separator
+            daySection
+            separator
+            scheduleSection
+            separator
+            darkroomSection
+            separator
+            pauseSection
+
+            if model.backlightAvailable {
+                separator
+                keyboardSection
+            }
+
+            separator
+            footer
+        }
+        .frame(width: panelWidth)
+    }
+
+    // MARK: - Header
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 12) {
+                Text("Dvsk")
+                    .font(.system(size: 15, weight: .semibold))
+                Spacer(minLength: 8)
+                Toggle("Activé", isOn: $preferences.isEnabled)
+                    .toggleStyle(.switch)
+                    .controlSize(.small)
+            }
+
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text(appliedTemperature)
+                    .font(.system(size: 28, weight: .semibold))
+                    .monospacedDigit()
+                Text(modeLabel)
+                    .font(.callout)
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                Spacer(minLength: 0)
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.top, 12)
+        .padding(.bottom, 8)
+    }
+
+    private var curve: some View {
+        CurveView(schedule: preferences.state.schedule, now: Date())
+            .padding(.horizontal, 14)
+            .padding(.bottom, 8)
+    }
+
+    // MARK: - Sections
+
+    private var nightSection: some View {
+        section {
+            sliderRow("Température de nuit", value: kelvinText(preferences.nightKelvin)) {
                 Slider(value: Binding(get: { preferences.nightKelvin },
                                       set: { actions.setNightKelvin($0) }),
                        in: 1200...6500,
                        step: 10)
             }
+        }
+    }
 
-            sliderRow("Day temperature", value: "\(Int(preferences.dayKelvin.rounded()))K") {
+    private var daySection: some View {
+        section {
+            sliderRow("Température de jour", value: kelvinText(preferences.dayKelvin)) {
                 Slider(value: $preferences.dayKelvin, in: 1200...6500, step: 10)
             }
+        }
+    }
 
-            VStack(alignment: .leading, spacing: 6) {
-                DatePicker("Night starts", selection: timeBinding(\.nightStart), displayedComponents: .hourAndMinute)
-                DatePicker("Night ends", selection: timeBinding(\.nightEnd), displayedComponents: .hourAndMinute)
-            }
-
+    private var scheduleSection: some View {
+        section {
+            timeRow("Coucher", selection: timeBinding(\.nightStart))
+            timeRow("Lever", selection: timeBinding(\.nightEnd))
             Stepper(value: $preferences.transitionMinutes, in: 0...180, step: 5) {
-                Text("Fade: \(preferences.transitionMinutes) min")
+                HStack(spacing: 8) {
+                    Text("Fondu")
+                    Spacer(minLength: 8)
+                    Text("\(preferences.transitionMinutes) min")
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
+                }
             }
+        }
+    }
 
-            sliderRow("Darkroom brightness", value: "\(Int((preferences.darkroomBrightness * 100).rounded()))%") {
+    private var darkroomSection: some View {
+        section {
+            HStack(spacing: 8) {
+                Text("Darkroom")
+                Spacer(minLength: 8)
+                Toggle("", isOn: Binding(get: { preferences.isDarkroom },
+                                         set: { actions.setDarkroom($0) }))
+                    .labelsHidden()
+                    .toggleStyle(.switch)
+                    .controlSize(.small)
+            }
+            sliderRow("Luminosité", value: percentText(preferences.darkroomBrightness)) {
                 Slider(value: $preferences.darkroomBrightness, in: 0...1)
             }
-
-            Toggle("Darkroom", isOn: Binding(get: { preferences.isDarkroom },
-                                             set: { actions.setDarkroom($0) }))
-
-            Button(pauseTitle) { actions.togglePause() }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .disabled(!preferences.isEnabled)
-
-            if model.backlightAvailable {
-                Divider()
-                sliderRow("Keyboard backlight", value: "\(Int(model.backlightPercent.rounded()))%") {
-                    Slider(value: Binding(get: { model.backlightPercent },
-                                          set: { actions.setBacklight($0) }),
-                           in: 0...100)
-                }
-
-                Toggle("Adjust keyboard in low light",
-                       isOn: Binding(get: { model.backlightAuto },
-                                     set: { _ in actions.toggleBacklightAuto() }))
-            }
-
-            Divider()
-            launchSection
-
-            Divider()
-            Button("Quit Dvsk") { actions.quit() }
-                .buttonStyle(.borderless)
         }
-        .padding(14)
-        .frame(width: 320)
     }
 
-    // MARK: - Sections
-
-    private var header: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(statusTitle)
-                    .font(.system(size: 15, weight: .semibold))
+    private var pauseSection: some View {
+        section {
+            HStack(spacing: 8) {
+                Text("Pause")
                 Spacer(minLength: 8)
-                Text(statusDetail)
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                Button(isPaused ? "Reprendre" : "Suspendre 1 h") { actions.togglePause() }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .disabled(!preferences.isEnabled)
             }
-            Toggle("Enabled", isOn: $preferences.isEnabled)
         }
     }
 
-    private var launchSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Toggle("Launch at login",
-                   isOn: Binding(get: { model.launchAtLogin },
-                                 set: { actions.setLaunchAtLogin($0) }))
-                .disabled(!model.launchAtLoginAvailable)
+    private var keyboardSection: some View {
+        section {
+            sliderRow("Rétroéclairage", value: "\(Int(model.backlightPercent.rounded())) %") {
+                Slider(value: Binding(get: { model.backlightPercent },
+                                      set: { actions.setBacklight($0) }),
+                       in: 0...100)
+            }
+            Toggle("Ajuster en faible lumière",
+                   isOn: Binding(get: { model.backlightAuto },
+                                 set: { _ in actions.toggleBacklightAuto() }))
+        }
+    }
 
-            if !model.launchAtLoginAvailable {
-                Text("Unavailable while running from a build folder.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } else if model.launchAtLoginNeedsApproval {
-                Text("Approve Dvsk in System Settings › General › Login Items.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+    // MARK: - Footer
+
+    private var footer: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 4) {
+                Toggle("Lancer à l'ouverture",
+                       isOn: Binding(get: { model.launchAtLogin },
+                                     set: { actions.setLaunchAtLogin($0) }))
+                    .disabled(!model.launchAtLoginAvailable)
+
+                if !model.launchAtLoginAvailable {
+                    Text("Indisponible depuis un dossier de build.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else if model.launchAtLoginNeedsApproval {
+                    Text("À autoriser dans Réglages Système › Général › Ouverture.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                Button("Quitter Dvsk") { actions.quit() }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
             }
         }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+    }
+
+    // MARK: - Building blocks
+
+    private var separator: some View {
+        Divider()
+    }
+
+    private func section<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            content()
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 9)
     }
 
     private func sliderRow<Content: View>(_ title: String,
                                           value: String,
                                           @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            HStack {
+            HStack(spacing: 8) {
                 Text(title)
                 Spacer(minLength: 8)
                 Text(value)
@@ -145,43 +239,53 @@ struct PanelView: View {
         }
     }
 
-    // MARK: - Derived text
-
-    private var statusTitle: String {
-        switch model.resolved.mode {
-        case .scheduled:
-            return "\(Int((model.resolved.kelvin ?? 0).rounded())) K"
-        case .darkroom:
-            return "Darkroom"
-        case .paused:
-            return "Paused"
-        case .disabled:
-            return "Off"
+    private func timeRow(_ title: String, selection: Binding<Date>) -> some View {
+        HStack(spacing: 8) {
+            Text(title)
+            Spacer(minLength: 8)
+            DatePicker("", selection: selection, displayedComponents: .hourAndMinute)
+                .labelsHidden()
+                .fixedSize()
         }
     }
 
-    private var statusDetail: String {
+    // MARK: - Derived text
+
+    private var appliedTemperature: String {
+        guard let kelvin = model.resolved.kelvin else { return "—" }
+        return kelvinText(kelvin)
+    }
+
+    private var modeLabel: String {
         switch model.resolved.mode {
         case .scheduled:
             let night = preferences.state.schedule.nightWeight(at: Date()) >= 0.5
-            return night ? "Night" : "Day"
+            return night ? "Nuit" : "Jour"
         case .darkroom:
-            return "\(Int((preferences.darkroomBrightness * 100).rounded()))% red"
+            return "Darkroom · \(percentText(preferences.darkroomBrightness))"
         case .paused:
-            guard let until = preferences.pausedUntil, until > Date() else { return "No tint" }
-            let minutes = Int((until.timeIntervalSinceNow / 60).rounded(.up))
-            return "\(minutes) min left"
+            guard let minutes = pausedMinutesLeft else { return "Pause" }
+            return "Pause · \(minutes) min"
         case .disabled:
-            return "No tint"
+            return "Désactivé"
         }
     }
 
-    private var pauseTitle: String {
-        isPaused ? "Resume" : "Disable for an hour"
+    private var isPaused: Bool {
+        pausedMinutesLeft != nil
     }
 
-    private var isPaused: Bool {
-        preferences.pausedUntil.map { $0 > Date() } ?? false
+    private var pausedMinutesLeft: Int? {
+        guard let until = preferences.pausedUntil, until > Date() else { return nil }
+        return Int((until.timeIntervalSinceNow / 60).rounded(.up))
+    }
+
+    private func kelvinText(_ kelvin: Double) -> String {
+        "\(Int(kelvin.rounded()).formatted()) K"
+    }
+
+    private func percentText(_ fraction: Double) -> String {
+        "\(Int((fraction * 100).rounded())) %"
     }
 
     private func timeBinding(_ keyPath: ReferenceWritableKeyPath<Preferences, TimeOfDay>) -> Binding<Date> {
