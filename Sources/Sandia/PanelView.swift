@@ -41,15 +41,7 @@ struct PanelView: View {
             header
             curve
             separator
-            nightSection
-            separator
-            daySection
-            separator
-            scheduleSection
-            separator
-            darkroomSection
-            separator
-            pauseSection
+            scheduleBlock
 
             if model.backlightAvailable {
                 separator
@@ -100,82 +92,118 @@ struct PanelView: View {
 
     // MARK: - Sections
 
-    private var nightSection: some View {
-        section {
-            sliderRow("Température de nuit", value: kelvinText(preferences.nightKelvin)) {
+    /// The schedule and the display controls share one compact block: each
+    /// boundary is a row pairing its temperature with the time it applies,
+    /// then Darkroom, the fade and the pause sit on a single control strip.
+    private var scheduleBlock: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            temperatureRow(title: "Coucher",
+                           label: "Température de nuit",
+                           value: kelvinText(preferences.nightKelvin),
+                           time: \.nightStart) {
                 snappedSlider(Binding(get: { preferences.nightKelvin },
                                       set: { actions.setNightKelvin($0) }),
                               in: 1200...6500,
                               step: 10)
             }
-        }
-    }
 
-    private var daySection: some View {
-        section {
-            sliderRow("Température de jour", value: kelvinText(preferences.dayKelvin)) {
+            rowSeparator
+            temperatureRow(title: "Lever",
+                           label: "Température de jour",
+                           value: kelvinText(preferences.dayKelvin),
+                           time: \.nightEnd) {
                 snappedSlider($preferences.dayKelvin, in: 1200...6500, step: 10)
             }
-        }
-    }
 
-    private var scheduleSection: some View {
-        section {
-            HStack(alignment: .top, spacing: 10) {
-                scheduleColumn("Coucher") {
-                    DatePicker("", selection: timeBinding(\.nightStart), displayedComponents: .hourAndMinute)
-                        .labelsHidden()
-                        .fixedSize()
+            rowSeparator
+            controlStrip
+
+            // The slider only concerns the darkroom red intensity, so it is
+            // meaningless — and looks like a screen setting — while it is off.
+            if preferences.isDarkroom {
+                HStack(spacing: 8) {
+                    Text("Intensité Darkroom")
+                    Slider(value: $preferences.darkroomBrightness, in: 0...1)
+                    Text(percentText(preferences.darkroomBrightness))
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
                 }
-                scheduleColumn("Lever") {
-                    DatePicker("", selection: timeBinding(\.nightEnd), displayedComponents: .hourAndMinute)
-                        .labelsHidden()
-                        .fixedSize()
-                }
-                scheduleColumn("Fondu") {
-                    HStack(spacing: 2) {
-                        Text("\(preferences.transitionMinutes) min")
-                            .monospacedDigit()
-                            .foregroundStyle(.secondary)
-                        Stepper("", value: $preferences.transitionMinutes, in: 0...180, step: 5)
-                            .labelsHidden()
-                    }
-                }
+                .padding(.top, 10)
             }
         }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 9)
     }
 
-    private var darkroomSection: some View {
-        section {
-            HStack(spacing: 8) {
-                Text("Darkroom")
-                Spacer(minLength: 8)
+    /// The control strip keeps three comparable zones and the same spacing:
+    /// Darkroom first, then the fade, and the pause at the trailing edge.
+    private var controlStrip: some View {
+        HStack(alignment: .top, spacing: 8) {
+            labelledColumn("Darkroom") {
                 Toggle("", isOn: Binding(get: { preferences.isDarkroom },
                                          set: { actions.setDarkroom($0) }))
                     .labelsHidden()
                     .toggleStyle(.switch)
                     .controlSize(.small)
             }
-            // The slider only concerns the darkroom red intensity, so it is
-            // meaningless — and looks like a screen setting — while it is off.
-            if preferences.isDarkroom {
-                sliderRow("Intensité Darkroom", value: percentText(preferences.darkroomBrightness)) {
-                    Slider(value: $preferences.darkroomBrightness, in: 0...1)
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            labelledColumn("Fondu") {
+                HStack(spacing: 2) {
+                    Text("\(preferences.transitionMinutes) min")
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
+                    Stepper("", value: $preferences.transitionMinutes, in: 0...180, step: 5)
+                        .labelsHidden()
                 }
             }
-        }
-    }
+            .frame(maxWidth: .infinity, alignment: .center)
 
-    private var pauseSection: some View {
-        section {
-            HStack(spacing: 8) {
-                Text("Pause")
-                Spacer(minLength: 8)
+            labelledColumn("Pause") {
                 Button(isPaused ? "Reprendre" : "Suspendre 1 h") { actions.togglePause() }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
                     .disabled(!preferences.isEnabled)
             }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+    }
+
+    /// A hairline between two rows, with just enough breathing room to read as
+    /// a separation rather than another row of content.
+    private var rowSeparator: some View {
+        Divider().padding(.vertical, 6)
+    }
+
+    /// One schedule boundary: the temperature with its full-width slider, then
+    /// the clock time in a fixed-width column so both rows line up vertically.
+    private func temperatureRow<SliderContent: View>(title: String,
+                                                     label: String,
+                                                     value: String,
+                                                     time keyPath: ReferenceWritableKeyPath<Preferences, TimeOfDay>,
+                                                     @ViewBuilder slider: () -> SliderContent) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 8) {
+                    Text(label)
+                    Spacer(minLength: 8)
+                    Text(value)
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
+                }
+                slider()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            labelledColumn(title) {
+                DatePicker(title,
+                           selection: timeBinding(keyPath),
+                           displayedComponents: .hourAndMinute)
+                    .labelsHidden()
+                    .fixedSize()
+                    .font(.body.monospacedDigit())
+            }
+            .frame(width: 64, alignment: .leading)
         }
     }
 
@@ -253,7 +281,10 @@ struct PanelView: View {
         }
     }
 
-    private func scheduleColumn<Content: View>(_ title: String,
+    /// A small caption over a control, the shape used by the three columns of
+    /// the control strip. It keeps its intrinsic width so the strip can place
+    /// each control side by side without truncating a label.
+    private func labelledColumn<Content: View>(_ title: String,
                                                @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(title)
@@ -262,7 +293,7 @@ struct PanelView: View {
                 .lineLimit(1)
             content()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize()
     }
 
     /// AppKit draws tick marks under a `Slider` that carries a `step`, and the
