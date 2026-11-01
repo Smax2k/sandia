@@ -90,7 +90,10 @@ final class Engine {
     // MARK: - Tick
 
     private func resolve(now: Date) -> ResolvedState {
-        var resolved = preferences.state.resolve(at: now)
+        var resolved = preferences.state(at: now).resolve(at: now)
+        if let override = preferences.manualOverride {
+            resolved = override.applied(to: resolved, at: now)
+        }
         if let previewKelvin, now < previewUntil, resolved.mode == .scheduled {
             resolved = ResolvedState(mode: .scheduled, rgb: ColorTemperature.rgb(kelvin: previewKelvin), kelvin: previewKelvin)
         }
@@ -100,6 +103,7 @@ final class Engine {
     private func tick() {
         guard !isShutDown else { return }
         let now = Date()
+        purgeExpiredOverride(now: now)
         let resolved = resolve(now: now)
         lastResolved = resolved
         let target = resolved.rgb
@@ -113,6 +117,14 @@ final class Engine {
             startAnimation(to: target, now: now)
         }
         onUpdate?(resolved)
+    }
+
+    /// Clears the dated manual temperature once it has run out, so the stored
+    /// value does not outlive its own expiry.
+    private func purgeExpiredOverride(now: Date) {
+        guard let until = preferences.manualUntil, now >= until else { return }
+        preferences.manualUntil = nil
+        preferences.manualKelvin = nil
     }
 
     private func startAnimation(to target: RGB, now: Date) {

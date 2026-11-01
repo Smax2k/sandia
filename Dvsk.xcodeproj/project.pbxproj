@@ -16,6 +16,7 @@
 		267E88265EA66C7E85F07479 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215BF4744361A962845848B8 /* LoginItem.swift */; };
 		2CB9B207E0A1E45FED256AD9 /* DvskCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC60512D9C62CC2A1F46B01 /* DvskCore.framework */; };
 		338ED3D5A34222E7ADA6C43F /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEDF6B1DBE299E9A9DF70D7 /* Preferences.swift */; };
+		5CF48B0ABAE4B7A0362E3976 /* SolarSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B8E37599CC438611DF2E94 /* SolarSchedule.swift */; };
 		621C9F8AA39CDDF533F2B23B /* DvskState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC111C260BEFE602E6B4070 /* DvskState.swift */; };
 		64621F23FAC91E156EBA867D /* SolarTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C363C1C2F87041AC77D946 /* SolarTimes.swift */; };
 		78FEC335213F47698C2C1E03 /* DvskCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC60512D9C62CC2A1F46B01 /* DvskCore.framework */; };
@@ -25,6 +26,7 @@
 		B7C9C24EFA4317AD3E8DBDB1 /* ColorTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935053CF6F5270CDD7921A97 /* ColorTemperature.swift */; };
 		CC9587223FC17F281CC215BF /* ColorTemperatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B7ADC00ADA05A48A8E9FCF /* ColorTemperatureTests.swift */; };
 		CE9FC80A33DE40972362E8C5 /* GammaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCACBFF528537A06AECED6C8 /* GammaController.swift */; };
+		D15AE7A1A040D56F323A8114 /* SolarScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB76D23A9C5A980179BCB8D /* SolarScheduleTests.swift */; };
 		D8E0F60E1869C82021A0C579 /* KeyboardBacklight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79352A3869336C169D823690 /* KeyboardBacklight.swift */; };
 		E477ACD153C0A2629E54919A /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 53DE2981CDDE39B079CFC6CC /* AppIcon.icns */; };
 		E7154C96AA220E3FC8296C8E /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D48EBF52497A1564DB8ED43 /* Engine.swift */; };
@@ -84,6 +86,7 @@
 		4CC60512D9C62CC2A1F46B01 /* DvskCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DvskCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DEDF6B1DBE299E9A9DF70D7 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		53DE2981CDDE39B079CFC6CC /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
+		58B8E37599CC438611DF2E94 /* SolarSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSchedule.swift; sourceTree = "<group>"; };
 		725C930F7725225E7DA92007 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		79352A3869336C169D823690 /* KeyboardBacklight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardBacklight.swift; sourceTree = "<group>"; };
 		8360C2F1710B0B205F84E719 /* DvskCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DvskCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +96,7 @@
 		CEC111C260BEFE602E6B4070 /* DvskState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DvskState.swift; sourceTree = "<group>"; };
 		D78EBBE462F5D0378E8DB1C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D9B7ADC00ADA05A48A8E9FCF /* ColorTemperatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTemperatureTests.swift; sourceTree = "<group>"; };
+		DCB76D23A9C5A980179BCB8D /* SolarScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarScheduleTests.swift; sourceTree = "<group>"; };
 		FCACBFF528537A06AECED6C8 /* GammaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GammaController.swift; sourceTree = "<group>"; };
 		FE97525525FC56E794FB945F /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,6 +153,7 @@
 				935053CF6F5270CDD7921A97 /* ColorTemperature.swift */,
 				CEC111C260BEFE602E6B4070 /* DvskState.swift */,
 				725C930F7725225E7DA92007 /* Schedule.swift */,
+				58B8E37599CC438611DF2E94 /* SolarSchedule.swift */,
 				47C363C1C2F87041AC77D946 /* SolarTimes.swift */,
 			);
 			path = DvskCore;
@@ -195,6 +200,7 @@
 				D9B7ADC00ADA05A48A8E9FCF /* ColorTemperatureTests.swift */,
 				BBD64DB9467BED681DD689F8 /* DvskStateTests.swift */,
 				21EFFFD0E76713297707F14E /* ScheduleTests.swift */,
+				DCB76D23A9C5A980179BCB8D /* SolarScheduleTests.swift */,
 				3F504F3157FCAD0872EBDAD2 /* SolarTimesTests.swift */,
 			);
 			path = DvskCoreTests;
@@ -324,6 +330,7 @@
 				B7C9C24EFA4317AD3E8DBDB1 /* ColorTemperature.swift in Sources */,
 				621C9F8AA39CDDF533F2B23B /* DvskState.swift in Sources */,
 				0E85680E377E88F3FD71807F /* Schedule.swift in Sources */,
+				5CF48B0ABAE4B7A0362E3976 /* SolarSchedule.swift in Sources */,
 				64621F23FAC91E156EBA867D /* SolarTimes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -335,6 +342,7 @@
 				CC9587223FC17F281CC215BF /* ColorTemperatureTests.swift in Sources */,
 				9A3D8B985145530D8040B29E /* DvskStateTests.swift in Sources */,
 				0E118E92905A9E6BBA016F55 /* ScheduleTests.swift in Sources */,
+				D15AE7A1A040D56F323A8114 /* SolarScheduleTests.swift in Sources */,
 				1832CD51B1BB757B89F7C7AD /* SolarTimesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
