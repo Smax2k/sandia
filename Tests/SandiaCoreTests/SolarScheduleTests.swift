@@ -1,5 +1,5 @@
 import XCTest
-@testable import DvskCore
+@testable import SandiaCore
 
 final class SolarScheduleTests: XCTestCase {
     private let paris: Calendar = {
@@ -279,7 +279,7 @@ final class SolarScheduleTests: XCTestCase {
 
     func testManualOverrideAppliesThenExpires() {
         let schedule = Schedule(transitionMinutes: 0, dayKelvin: 6400, nightKelvin: 2200)
-        let state = DvskState(schedule: schedule)
+        let state = SandiaState(schedule: schedule)
         let base = state.resolve(at: moment(2026, 6, 21, 23))
         XCTAssertEqual(base.kelvin ?? 0, 2200, accuracy: 0.5)
 
@@ -303,7 +303,7 @@ final class SolarScheduleTests: XCTestCase {
     func testManualOverrideKeepsTheHigherPriorities() {
         let override = ManualOverride(kelvin: 3400, until: moment(2026, 6, 22, 1))
         let evening = moment(2026, 6, 21, 23)
-        var state = DvskState()
+        var state = SandiaState()
 
         state.isEnabled = false
         XCTAssertEqual(override.applied(to: state.resolve(at: evening), at: evening).mode, .disabled)

@@ -10,14 +10,14 @@ cask "dvsk" do
   version "$VERSION"
   sha256 "$SHA256"
 
-  url "https://github.com/fabianwgl/dvsk/releases/download/v#{version}/Dvsk-#{version}.dmg"
-  name "Dvsk"
+  url "https://github.com/fabianwgl/dvsk/releases/download/v#{version}/Sandia-#{version}.dmg"
+  name "Sandia"
   desc "Open-source f.lux alternative that warms the screen in the evening"
   homepage "https://github.com/fabianwgl/dvsk"
 
   depends_on macos: :sequoia
 
-  app "Dvsk.app"
+  app "Sandia.app"
 
   uninstall quit: "dev.fwgl.dvsk"
 

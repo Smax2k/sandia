@@ -1,4 +1,4 @@
-# Dvsk
+# Sandia
 
 Application personnelle de barre des menus pour macOS : elle réchauffe l'écran le soir en agissant sur les tables gamma, comme f.lux. Elle remplace f.lux sur nos Mac.
 
@@ -15,29 +15,29 @@ Le fichier `LICENSE` d'origine est conservé : le code dérive d'un projet MIT.
 Le projet Xcode est généré par [XcodeGen](https://github.com/yonaskolb/XcodeGen) depuis `project.yml`, et le `.xcodeproj` produit est versionné : Xcode s'ouvre directement, sans rien installer.
 
 ```sh
-open Dvsk.xcodeproj      # puis ⌘R
+open Sandia.xcodeproj      # puis ⌘R
 ```
 
 Après une régénération (`brew install xcodegen`) :
 
 ```sh
 xcodegen generate
-xcodebuild -project Dvsk.xcodeproj -scheme Dvsk -configuration Release build
+xcodebuild -project Sandia.xcodeproj -scheme Sandia -configuration Release build
 ```
 
 Tests (49) :
 
 ```sh
 swift test
-xcodebuild test -project Dvsk.xcodeproj -scheme Dvsk -destination 'platform=macOS'
+xcodebuild test -project Sandia.xcodeproj -scheme Sandia -destination 'platform=macOS'
 ```
 
 ## Installer
 
 ```sh
-xcodebuild -project Dvsk.xcodeproj -scheme Dvsk -configuration Release -derivedDataPath .build/xcode build
-ditto .build/xcode/Build/Products/Release/Dvsk.app /Applications/Dvsk.app
-open /Applications/Dvsk.app
+xcodebuild -project Sandia.xcodeproj -scheme Sandia -configuration Release -derivedDataPath .build/xcode build
+ditto .build/xcode/Build/Products/Release/Sandia.app /Applications/Sandia.app
+open /Applications/Sandia.app
 ```
 
 L'app vit dans `/Applications` : c'est de là que « Lancer à l'ouverture » fonctionne. Depuis un dossier de build, la ligne est volontairement grisée.
@@ -52,25 +52,25 @@ Installation sur un autre Mac sans avertissement de Gatekeeper : il faut un cert
 
 ```sh
 xcrun notarytool store-credentials dvsk-notary --apple-id … --team-id 5PC4RUY4PJ
-xcrun notarytool submit Dvsk.zip --keychain-profile dvsk-notary --wait
-xcrun stapler staple Dvsk.app
+xcrun notarytool submit Sandia.zip --keychain-profile dvsk-notary --wait
+xcrun stapler staple Sandia.app
 ```
 
 Faute de Developer ID, un `.app` copié par `scp`/`rsync` ou téléchargé par `curl` s'ouvre quand même : ces voies ne posent pas l'attribut de quarantaine. Un fichier reçu par AirDrop ou récupéré dans un navigateur sera, lui, bloqué.
 
 ## Organisation
 
-- `Sources/DvskCore/` — logique pure, sans AppKit : couleur, horaire, calcul solaire. C'est là que vont les tests.
-- `Sources/Dvsk/` — interface : icône de barre des menus, popover, gamma, rétroéclairage.
-- `Tests/DvskCoreTests/` — tests unitaires de `DvskCore`.
-- `project.yml` — source du projet Xcode. Ne pas éditer `Dvsk.xcodeproj` à la main : il est régénéré.
+- `Sources/SandiaCore/` — logique pure, sans AppKit : couleur, horaire, calcul solaire. C'est là que vont les tests.
+- `Sources/Sandia/` — interface : icône de barre des menus, popover, gamma, rétroéclairage.
+- `Tests/SandiaCoreTests/` — tests unitaires de `SandiaCore`.
+- `project.yml` — source du projet Xcode. Ne pas éditer `Sandia.xcodeproj` à la main : il est régénéré.
 
 ## Si l'écran reste teinté
 
 Après un plantage ou un `kill -9`, les couleurs peuvent rester chaudes :
 
 ```sh
-/Applications/Dvsk.app/Contents/MacOS/Dvsk --reset
+/Applications/Sandia.app/Contents/MacOS/Sandia --reset
 ```
 
 ## Limites connues

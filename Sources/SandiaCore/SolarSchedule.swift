@@ -10,7 +10,7 @@ public enum ScheduleMode: String, CaseIterable, Equatable, Sendable {
     case solar
 }
 
-/// A location entered by hand. Deliberately no CoreLocation: Dvsk never asks
+/// A location entered by hand. Deliberately no CoreLocation: Sandia never asks
 /// the system where it is.
 public struct SolarCoordinates: Equatable, Sendable {
     /// Positive north.
@@ -169,7 +169,7 @@ public struct ManualOverride: Equatable, Sendable {
     }
 
     /// Applies on a scheduled look only: disabled, paused and darkroom keep the
-    /// priority they already have in `DvskState.resolve`.
+    /// priority they already have in `SandiaState.resolve`.
     public func applied(to state: ResolvedState, at date: Date) -> ResolvedState {
         guard state.mode == .scheduled, isActive(at: date), kelvin.isFinite else { return state }
         return ResolvedState(mode: .scheduled,

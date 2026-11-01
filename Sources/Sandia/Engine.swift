@@ -1,7 +1,7 @@
 import AppKit
 import Combine
 import CoreGraphics
-import DvskCore
+import SandiaCore
 
 /// Resolves the target look once a second, eases toward it, and re-applies it
 /// whenever macOS may have reset the gamma tables.

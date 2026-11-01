@@ -6,7 +6,7 @@ enum LoginItem {
     /// A bundle inside a build product points at a throwaway path, which must never be registered.
     private static let ephemeralPathMarkers = ["/DerivedData/", "/.build/", "/Build/Products/"]
 
-    /// False while Dvsk runs from Xcode or a local build, where registering would point at a temporary app.
+    /// False while Sandia runs from Xcode or a local build, where registering would point at a temporary app.
     static var isSupportedLocation: Bool {
         let path = Bundle.main.bundlePath
         return !ephemeralPathMarkers.contains { path.contains($0) }
@@ -27,7 +27,7 @@ enum LoginItem {
                 try SMAppService.mainApp.unregister()
             }
         } catch {
-            NSLog("Dvsk: login item update failed: \(error.localizedDescription)")
+            NSLog("Sandia: login item update failed: \(error.localizedDescription)")
         }
         return isEnabled
     }

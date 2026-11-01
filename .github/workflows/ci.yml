@@ -26,6 +26,6 @@ jobs:
         run: ./scripts/bundle.sh
       - uses: actions/upload-artifact@v4
         with:
-          name: Dvsk-pr-${{ github.event.pull_request.number }}
-          path: build/Dvsk-*.dmg
+          name: Sandia-pr-${{ github.event.pull_request.number }}
+          path: build/Sandia-*.dmg
           retention-days: 14

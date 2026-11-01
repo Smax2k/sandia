@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-import DvskCore
+import SandiaCore
 
 /// Reactive state the panel needs from AppKit: engine output and system capabilities.
 final class PanelModel: ObservableObject {
@@ -28,7 +28,7 @@ struct PanelActions {
     var quit: () -> Void
 }
 
-/// The status item's popover: the single place where Dvsk is configured.
+/// The status item's popover: the single place where Sandia is configured.
 struct PanelView: View {
     @ObservedObject var preferences: Preferences
     @ObservedObject var model: PanelModel
@@ -67,7 +67,7 @@ struct PanelView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 12) {
-                Text("Dvsk")
+                Text("Sandia")
                     .font(.system(size: 15, weight: .semibold))
                 Spacer(minLength: 8)
                 Toggle("Activé", isOn: $preferences.isEnabled)
@@ -201,7 +201,7 @@ struct PanelView: View {
 
             HStack(spacing: 0) {
                 Spacer(minLength: 0)
-                Button("Quitter Dvsk") { actions.quit() }
+                Button("Quitter Sandia") { actions.quit() }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
             }

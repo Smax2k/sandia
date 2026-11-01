@@ -3,22 +3,22 @@
 import PackageDescription
 
 let package = Package(
-    name: "Dvsk",
+    name: "Sandia",
     platforms: [
         .macOS(.v15)
     ],
     products: [
-        .executable(name: "Dvsk", targets: ["Dvsk"])
+        .executable(name: "Sandia", targets: ["Sandia"])
     ],
     targets: [
-        .target(name: "DvskCore"),
+        .target(name: "SandiaCore"),
         .executableTarget(
-            name: "Dvsk",
-            dependencies: ["DvskCore"]
+            name: "Sandia",
+            dependencies: ["SandiaCore"]
         ),
         .testTarget(
-            name: "DvskCoreTests",
-            dependencies: ["DvskCore"]
+            name: "SandiaCoreTests",
+            dependencies: ["SandiaCore"]
         )
     ],
     swiftLanguageModes: [.v5]

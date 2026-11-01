@@ -24,7 +24,7 @@ public struct ResolvedState: Equatable, Sendable {
 
 /// User intent. `resolve` applies the priority:
 /// disabled, then paused, then darkroom, then the schedule.
-public struct DvskState: Equatable, Sendable {
+public struct SandiaState: Equatable, Sendable {
     public var isEnabled: Bool
     public var pausedUntil: Date?
     public var isDarkroom: Bool

@@ -1,0 +1,677 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0765BAB2A585102D1D5E79E5 /* SolarTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D8AF8061D37ACA10022CC3 /* SolarTimes.swift */; };
+		0F56488FA99D2CC00E2158EE /* KeyboardBacklight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D57C676B82BD57BEE7D2C /* KeyboardBacklight.swift */; };
+		1362801BA8825AD490342FA7 /* SolarScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554E3CC7D68F210FAE176EB7 /* SolarScheduleTests.swift */; };
+		1430CF47211B81F467BAE170 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894530263FE43BBA89FA28D1 /* Schedule.swift */; };
+		20BA50D11A195548815ECB27 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECE1AF67CB0273D675B2139 /* Engine.swift */; };
+		2C9A7A4B42FA993E3FBA0E7D /* SandiaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E612C0236B94346DE78B7F1 /* SandiaCore.framework */; };
+		3A978281705DBA15CBE4B372 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E377FB5854F096B97DF1CCC2 /* Preferences.swift */; };
+		40F57776679A01F08B3FB147 /* SandiaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17967863D1BB03CE036C3F2 /* SandiaState.swift */; };
+		4607876D3E6EA01FB5720F6C /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EB190D2ADEE8D8B9D9F9B8 /* ScheduleTests.swift */; };
+		5AF8270A4644DFF9C078FB93 /* ColorTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF61B9564E046B21D3C248D /* ColorTemperature.swift */; };
+		6AFAE07DC1C7AA28B0C7B784 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A897F9D052FDE32883FEBE /* MenuController.swift */; };
+		70D76BC72E68C694B81222D5 /* CurveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196E4ED3F987995B15FA0ED1 /* CurveView.swift */; };
+		769A3EA3CBC89B1626E73AD9 /* GammaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A08777A473600D94D2FFBC /* GammaController.swift */; };
+		876C2281475906640DC505C5 /* SandiaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4E612C0236B94346DE78B7F1 /* SandiaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		88396C4D337B0FF97840510E /* PanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FEFF58195F35A536AD50D38 /* PanelView.swift */; };
+		978085F9DA407E6887FB4B6E /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744E0018CB9B46271D3276B0 /* LoginItem.swift */; };
+		A535E14C2E97F5862A178714 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FFB2A041BCAF25AC4FD67D /* main.swift */; };
+		A9B7DD442F069323FE400055 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 230AD51A1771A38891ED80F1 /* AppIcon.icns */; };
+		AEA5EAA360E1B167B4A9A40F /* SandiaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4E612C0236B94346DE78B7F1 /* SandiaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B1663B1DE7DA5F8C07545D8A /* SandiaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E612C0236B94346DE78B7F1 /* SandiaCore.framework */; };
+		B87B59FCDF32CD54430DA063 /* SolarTimesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF3F9DE66541DC8C7AFCAE6 /* SolarTimesTests.swift */; };
+		C32D16AD4C53A9FD66D8288A /* ColorTemperatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E222C20F7D9363235CFE80 /* ColorTemperatureTests.swift */; };
+		D1862336F551FEE27008DE10 /* SandiaStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C71C6F74E1CEC97FB13B19 /* SandiaStateTests.swift */; };
+		D51DD0D412EF49E4FBCFDFBA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE9F8322197EE3895C5F671 /* AppDelegate.swift */; };
+		F9B5588EB6A4AC1EEA923685 /* SolarSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711CEB62657931897EBFAB3E /* SolarSchedule.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		99B1F65B0BD87812A8D4E945 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BBF7C68077E484178827B604 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3E8A4FD55AEED1DA718FC8B;
+			remoteInfo = SandiaCore;
+		};
+		F363857FFF2396CCA53E54CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BBF7C68077E484178827B604 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3E8A4FD55AEED1DA718FC8B;
+			remoteInfo = SandiaCore;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AE4F9FF9DE8519FE77604879 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				876C2281475906640DC505C5 /* SandiaCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD8EC067D4F8D8E338688C82 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AEA5EAA360E1B167B4A9A40F /* SandiaCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0AF61B9564E046B21D3C248D /* ColorTemperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTemperature.swift; sourceTree = "<group>"; };
+		0FEFF58195F35A536AD50D38 /* PanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelView.swift; sourceTree = "<group>"; };
+		196E4ED3F987995B15FA0ED1 /* CurveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurveView.swift; sourceTree = "<group>"; };
+		230AD51A1771A38891ED80F1 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
+		2ECE1AF67CB0273D675B2139 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		48B9F55A0A7266440E0F6377 /* Sandia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sandia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AE9F8322197EE3895C5F671 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4CF3F9DE66541DC8C7AFCAE6 /* SolarTimesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarTimesTests.swift; sourceTree = "<group>"; };
+		4E612C0236B94346DE78B7F1 /* SandiaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SandiaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		554E3CC7D68F210FAE176EB7 /* SolarScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarScheduleTests.swift; sourceTree = "<group>"; };
+		711CEB62657931897EBFAB3E /* SolarSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSchedule.swift; sourceTree = "<group>"; };
+		744E0018CB9B46271D3276B0 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
+		83A08777A473600D94D2FFBC /* GammaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GammaController.swift; sourceTree = "<group>"; };
+		845D57C676B82BD57BEE7D2C /* KeyboardBacklight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardBacklight.swift; sourceTree = "<group>"; };
+		894530263FE43BBA89FA28D1 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		9F57795798618B0F8ECC457F /* SandiaCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SandiaCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4D8AF8061D37ACA10022CC3 /* SolarTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarTimes.swift; sourceTree = "<group>"; };
+		B3A897F9D052FDE32883FEBE /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		C9E222C20F7D9363235CFE80 /* ColorTemperatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTemperatureTests.swift; sourceTree = "<group>"; };
+		C9EB190D2ADEE8D8B9D9F9B8 /* ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
+		D5FFB2A041BCAF25AC4FD67D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		D9C71C6F74E1CEC97FB13B19 /* SandiaStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandiaStateTests.swift; sourceTree = "<group>"; };
+		E377FB5854F096B97DF1CCC2 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		F17967863D1BB03CE036C3F2 /* SandiaState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandiaState.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		28E2B8FB93FBE771D956ABC3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1663B1DE7DA5F8C07545D8A /* SandiaCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB75305239C20CF07CBE6F9E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C9A7A4B42FA993E3FBA0E7D /* SandiaCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		018D95A11FDEE7FAD6D2A7C2 = {
+			isa = PBXGroup;
+			children = (
+				E491929838BD0AB9F9D7BADA /* Resources */,
+				0C1DB90187405C0AA44EE7D6 /* Sources */,
+				4A96E4513399372048823D0E /* Tests */,
+				AB0C3917245C3A5092AF7E83 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0C1DB90187405C0AA44EE7D6 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				BE64C93C4A22EE4F1F8F4362 /* Sandia */,
+				3DA9DD543B6E7AE43DCF5CAC /* SandiaCore */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		3DA9DD543B6E7AE43DCF5CAC /* SandiaCore */ = {
+			isa = PBXGroup;
+			children = (
+				0AF61B9564E046B21D3C248D /* ColorTemperature.swift */,
+				F17967863D1BB03CE036C3F2 /* SandiaState.swift */,
+				894530263FE43BBA89FA28D1 /* Schedule.swift */,
+				711CEB62657931897EBFAB3E /* SolarSchedule.swift */,
+				A4D8AF8061D37ACA10022CC3 /* SolarTimes.swift */,
+			);
+			path = SandiaCore;
+			sourceTree = "<group>";
+		};
+		4A96E4513399372048823D0E /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				52B6FF5AE1CC5D0452340492 /* SandiaCoreTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		52B6FF5AE1CC5D0452340492 /* SandiaCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				C9E222C20F7D9363235CFE80 /* ColorTemperatureTests.swift */,
+				D9C71C6F74E1CEC97FB13B19 /* SandiaStateTests.swift */,
+				C9EB190D2ADEE8D8B9D9F9B8 /* ScheduleTests.swift */,
+				554E3CC7D68F210FAE176EB7 /* SolarScheduleTests.swift */,
+				4CF3F9DE66541DC8C7AFCAE6 /* SolarTimesTests.swift */,
+			);
+			path = SandiaCoreTests;
+			sourceTree = "<group>";
+		};
+		AB0C3917245C3A5092AF7E83 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				48B9F55A0A7266440E0F6377 /* Sandia.app */,
+				4E612C0236B94346DE78B7F1 /* SandiaCore.framework */,
+				9F57795798618B0F8ECC457F /* SandiaCoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE64C93C4A22EE4F1F8F4362 /* Sandia */ = {
+			isa = PBXGroup;
+			children = (
+				4AE9F8322197EE3895C5F671 /* AppDelegate.swift */,
+				196E4ED3F987995B15FA0ED1 /* CurveView.swift */,
+				2ECE1AF67CB0273D675B2139 /* Engine.swift */,
+				83A08777A473600D94D2FFBC /* GammaController.swift */,
+				845D57C676B82BD57BEE7D2C /* KeyboardBacklight.swift */,
+				744E0018CB9B46271D3276B0 /* LoginItem.swift */,
+				D5FFB2A041BCAF25AC4FD67D /* main.swift */,
+				B3A897F9D052FDE32883FEBE /* MenuController.swift */,
+				0FEFF58195F35A536AD50D38 /* PanelView.swift */,
+				E377FB5854F096B97DF1CCC2 /* Preferences.swift */,
+			);
+			path = Sandia;
+			sourceTree = "<group>";
+		};
+		E491929838BD0AB9F9D7BADA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				230AD51A1771A38891ED80F1 /* AppIcon.icns */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2098D780B994F4E70872B9AC /* Sandia */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F2A19F3910C1753D85D6F1F5 /* Build configuration list for PBXNativeTarget "Sandia" */;
+			buildPhases = (
+				2734B83E46F8A94DF3A65AA1 /* Sources */,
+				9577C8E8B2CAA501BFEFB1A8 /* Resources */,
+				28E2B8FB93FBE771D956ABC3 /* Frameworks */,
+				CD8EC067D4F8D8E338688C82 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DFD44129673A7CDDF9B338B9 /* PBXTargetDependency */,
+			);
+			name = Sandia;
+			packageProductDependencies = (
+			);
+			productName = Sandia;
+			productReference = 48B9F55A0A7266440E0F6377 /* Sandia.app */;
+			productType = "com.apple.product-type.application";
+		};
+		72A09060A6351FD6CC35D2C2 /* SandiaCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8095C398F2AA99D1D70D884E /* Build configuration list for PBXNativeTarget "SandiaCoreTests" */;
+			buildPhases = (
+				12227D7B9645A0B0BEB3A69E /* Sources */,
+				FB75305239C20CF07CBE6F9E /* Frameworks */,
+				AE4F9FF9DE8519FE77604879 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B5EE03528C93C526C2F6E415 /* PBXTargetDependency */,
+			);
+			name = SandiaCoreTests;
+			packageProductDependencies = (
+			);
+			productName = SandiaCoreTests;
+			productReference = 9F57795798618B0F8ECC457F /* SandiaCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C3E8A4FD55AEED1DA718FC8B /* SandiaCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9B811AE65D4814DA8111DFB /* Build configuration list for PBXNativeTarget "SandiaCore" */;
+			buildPhases = (
+				2F933022CCC7DC3A7E7A0426 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SandiaCore;
+			packageProductDependencies = (
+			);
+			productName = SandiaCore;
+			productReference = 4E612C0236B94346DE78B7F1 /* SandiaCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BBF7C68077E484178827B604 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					2098D780B994F4E70872B9AC = {
+						DevelopmentTeam = 5PC4RUY4PJ;
+						ProvisioningStyle = Automatic;
+					};
+					72A09060A6351FD6CC35D2C2 = {
+						DevelopmentTeam = 5PC4RUY4PJ;
+						ProvisioningStyle = Automatic;
+					};
+					C3E8A4FD55AEED1DA718FC8B = {
+						DevelopmentTeam = 5PC4RUY4PJ;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C0D5D47220BBCB3FC3F09644 /* Build configuration list for PBXProject "Sandia" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 018D95A11FDEE7FAD6D2A7C2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = AB0C3917245C3A5092AF7E83 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C3E8A4FD55AEED1DA718FC8B /* SandiaCore */,
+				2098D780B994F4E70872B9AC /* Sandia */,
+				72A09060A6351FD6CC35D2C2 /* SandiaCoreTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9577C8E8B2CAA501BFEFB1A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9B7DD442F069323FE400055 /* AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		12227D7B9645A0B0BEB3A69E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C32D16AD4C53A9FD66D8288A /* ColorTemperatureTests.swift in Sources */,
+				D1862336F551FEE27008DE10 /* SandiaStateTests.swift in Sources */,
+				4607876D3E6EA01FB5720F6C /* ScheduleTests.swift in Sources */,
+				1362801BA8825AD490342FA7 /* SolarScheduleTests.swift in Sources */,
+				B87B59FCDF32CD54430DA063 /* SolarTimesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2734B83E46F8A94DF3A65AA1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D51DD0D412EF49E4FBCFDFBA /* AppDelegate.swift in Sources */,
+				70D76BC72E68C694B81222D5 /* CurveView.swift in Sources */,
+				20BA50D11A195548815ECB27 /* Engine.swift in Sources */,
+				769A3EA3CBC89B1626E73AD9 /* GammaController.swift in Sources */,
+				0F56488FA99D2CC00E2158EE /* KeyboardBacklight.swift in Sources */,
+				978085F9DA407E6887FB4B6E /* LoginItem.swift in Sources */,
+				6AFAE07DC1C7AA28B0C7B784 /* MenuController.swift in Sources */,
+				88396C4D337B0FF97840510E /* PanelView.swift in Sources */,
+				3A978281705DBA15CBE4B372 /* Preferences.swift in Sources */,
+				A535E14C2E97F5862A178714 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2F933022CCC7DC3A7E7A0426 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5AF8270A4644DFF9C078FB93 /* ColorTemperature.swift in Sources */,
+				40F57776679A01F08B3FB147 /* SandiaState.swift in Sources */,
+				1430CF47211B81F467BAE170 /* Schedule.swift in Sources */,
+				F9B5588EB6A4AC1EEA923685 /* SolarSchedule.swift in Sources */,
+				0765BAB2A585102D1D5E79E5 /* SolarTimes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B5EE03528C93C526C2F6E415 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3E8A4FD55AEED1DA718FC8B /* SandiaCore */;
+			targetProxy = 99B1F65B0BD87812A8D4E945 /* PBXContainerItemProxy */;
+		};
+		DFD44129673A7CDDF9B338B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3E8A4FD55AEED1DA718FC8B /* SandiaCore */;
+			targetProxy = F363857FFF2396CCA53E54CC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		4D8139136AFC3C384350A2CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = fr.jbahu.sandia.core;
+				PRODUCT_NAME = SandiaCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		6147F440CFA4A05E1E407803 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 3;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5PC4RUY4PJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.2.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		6CC88491ABA7CEFA39CDE5A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = fr.jbahu.sandia.core;
+				PRODUCT_NAME = SandiaCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		82268CFCD09D19414CD80DC6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppInfo.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = fr.jbahu.sandia;
+				PRODUCT_NAME = Sandia;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B128F52142EFFADE2C269809 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AppInfo.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = fr.jbahu.sandia;
+				PRODUCT_NAME = Sandia;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BED5BF1195B9964E83138CCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = fr.jbahu.sandia.coretests;
+				SDKROOT = macosx;
+				TEST_HOST = "";
+			};
+			name = Debug;
+		};
+		E0D17E9270C5202DF3665B27 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = fr.jbahu.sandia.coretests;
+				SDKROOT = macosx;
+				TEST_HOST = "";
+			};
+			name = Release;
+		};
+		E288474403A1267F1D19B63B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 3;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 5PC4RUY4PJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.2.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8095C398F2AA99D1D70D884E /* Build configuration list for PBXNativeTarget "SandiaCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BED5BF1195B9964E83138CCE /* Debug */,
+				E0D17E9270C5202DF3665B27 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A9B811AE65D4814DA8111DFB /* Build configuration list for PBXNativeTarget "SandiaCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6CC88491ABA7CEFA39CDE5A4 /* Debug */,
+				4D8139136AFC3C384350A2CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C0D5D47220BBCB3FC3F09644 /* Build configuration list for PBXProject "Sandia" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6147F440CFA4A05E1E407803 /* Debug */,
+				E288474403A1267F1D19B63B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F2A19F3910C1753D85D6F1F5 /* Build configuration list for PBXNativeTarget "Sandia" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				82268CFCD09D19414CD80DC6 /* Debug */,
+				B128F52142EFFADE2C269809 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BBF7C68077E484178827B604 /* Project object */;
+}

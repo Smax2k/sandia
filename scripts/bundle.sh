@@ -1,6 +1,6 @@
 #!/bin/bash
-# Builds a universal release binary, wraps it in build/Dvsk.app (ad-hoc codesigned)
-# and packs build/Dvsk-<version>.dmg with an Applications symlink for drag-install.
+# Builds a universal release binary, wraps it in build/Sandia.app (ad-hoc codesigned)
+# and packs build/Sandia-<version>.dmg with an Applications symlink for drag-install.
 #
 # For a release build, set:
 #   DEVELOPER_ID    a "Developer ID Application" signing identity, to sign the app and DMG
@@ -9,10 +9,10 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-APP="build/Dvsk.app"
+APP="build/Sandia.app"
 STAGING="build/dmg"
 VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" AppInfo.plist)
-DMG="build/Dvsk-$VERSION.dmg"
+DMG="build/Sandia-$VERSION.dmg"
 IDENTITY="${DEVELOPER_ID:-}"
 NOTARY_PROFILE="${NOTARY_PROFILE:-}"
 
@@ -42,12 +42,12 @@ if ! swift build -c release "${ARCHS[@]}"; then
     swift build -c release
 fi
 # The output path differs between build systems, so ask SwiftPM for it.
-BIN="$(swift build -c release ${ARCHS[@]+"${ARCHS[@]}"} --show-bin-path)/Dvsk"
+BIN="$(swift build -c release ${ARCHS[@]+"${ARCHS[@]}"} --show-bin-path)/Sandia"
 echo "Binary archs: $(lipo -archs "$BIN")"
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp "$BIN" "$APP/Contents/MacOS/Dvsk"
+cp "$BIN" "$APP/Contents/MacOS/Sandia"
 cp AppInfo.plist "$APP/Contents/Info.plist"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 if [[ -n "$IDENTITY" ]]; then
@@ -59,9 +59,9 @@ fi
 
 if [[ -n "$NOTARY_PROFILE" ]]; then
     # Staple the app itself too, so it opens offline once dragged out of the DMG.
-    ditto -c -k --keepParent "$APP" build/Dvsk.zip
-    notarize build/Dvsk.zip
-    rm build/Dvsk.zip
+    ditto -c -k --keepParent "$APP" build/Sandia.zip
+    notarize build/Sandia.zip
+    rm build/Sandia.zip
     xcrun stapler staple "$APP"
 fi
 
@@ -69,7 +69,7 @@ rm -rf "$STAGING" "$DMG"
 mkdir -p "$STAGING"
 cp -R "$APP" "$STAGING/"
 ln -s /Applications "$STAGING/Applications"
-hdiutil create -volname "Dvsk" -srcfolder "$STAGING" -ov -format UDZO "$DMG" >/dev/null
+hdiutil create -volname "Sandia" -srcfolder "$STAGING" -ov -format UDZO "$DMG" >/dev/null
 rm -rf "$STAGING"
 
 if [[ -n "$IDENTITY" ]]; then

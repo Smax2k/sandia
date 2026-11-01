@@ -1,6 +1,6 @@
-# XcodeGen: `xcodegen generate` régénère Dvsk.xcodeproj depuis ce fichier.
+# XcodeGen: `xcodegen generate` régénère Sandia.xcodeproj depuis ce fichier.
 # Le .xcodeproj généré est versionné, Xcode s'ouvre donc sans installer XcodeGen.
-name: Dvsk
+name: Sandia
 
 options:
   bundleIdPrefix: fr.jbahu
@@ -21,33 +21,33 @@ settings:
     DEAD_CODE_STRIPPING: YES
 
 targets:
-  DvskCore:
+  SandiaCore:
     type: framework
     platform: macOS
     sources:
-      - Sources/DvskCore
+      - Sources/SandiaCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: fr.jbahu.dvsk.core
-        PRODUCT_NAME: DvskCore
+        PRODUCT_BUNDLE_IDENTIFIER: fr.jbahu.sandia.core
+        PRODUCT_NAME: SandiaCore
         GENERATE_INFOPLIST_FILE: YES
         SKIP_INSTALL: YES
         DEFINES_MODULE: YES
 
-  Dvsk:
+  Sandia:
     type: application
     platform: macOS
     sources:
-      - Sources/Dvsk
+      - Sources/Sandia
       - Resources
     dependencies:
-      - target: DvskCore
+      - target: SandiaCore
         embed: true
         codeSign: true
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: fr.jbahu.dvsk
-        PRODUCT_NAME: Dvsk
+        PRODUCT_BUNDLE_IDENTIFIER: fr.jbahu.sandia
+        PRODUCT_NAME: Sandia
         INFOPLIST_FILE: AppInfo.plist
         GENERATE_INFOPLIST_FILE: NO
         COMBINE_HIDPI_IMAGES: YES
@@ -56,32 +56,32 @@ targets:
           - "$(inherited)"
           - "@executable_path/../Frameworks"
 
-  DvskCoreTests:
+  SandiaCoreTests:
     type: bundle.unit-test
     platform: macOS
     sources:
-      - Tests/DvskCoreTests
+      - Tests/SandiaCoreTests
     dependencies:
-      - target: DvskCore
+      - target: SandiaCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: fr.jbahu.dvsk.coretests
+        PRODUCT_BUNDLE_IDENTIFIER: fr.jbahu.sandia.coretests
         GENERATE_INFOPLIST_FILE: YES
         BUNDLE_LOADER: ""
         TEST_HOST: ""
 
 schemes:
-  Dvsk:
+  Sandia:
     build:
       targets:
-        Dvsk: all
-        DvskCoreTests: [test]
+        Sandia: all
+        SandiaCoreTests: [test]
     run:
       config: Debug
     test:
       config: Debug
       targets:
-        - DvskCoreTests
+        - SandiaCoreTests
     profile:
       config: Release
     analyze:

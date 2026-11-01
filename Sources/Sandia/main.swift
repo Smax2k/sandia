@@ -4,7 +4,7 @@ import CoreGraphics
 // Recovery path after a crash or `kill -9`: restore colours and exit without any UI.
 if CommandLine.arguments.contains("--reset") {
     CGDisplayRestoreColorSyncSettings()
-    print("Dvsk: display colours restored.")
+    print("Sandia: display colours restored.")
     exit(0)
 }
 

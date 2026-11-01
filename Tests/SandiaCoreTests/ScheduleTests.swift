@@ -1,5 +1,5 @@
 import XCTest
-@testable import DvskCore
+@testable import SandiaCore
 
 final class ScheduleTests: XCTestCase {
     private var calendar: Calendar = {

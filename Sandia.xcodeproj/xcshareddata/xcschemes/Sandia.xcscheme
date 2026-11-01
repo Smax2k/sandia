@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "513AB111303670D6FF58D7BC"
-               BuildableName = "Dvsk.app"
-               BlueprintName = "Dvsk"
-               ReferencedContainer = "container:Dvsk.xcodeproj">
+               BlueprintIdentifier = "2098D780B994F4E70872B9AC"
+               BuildableName = "Sandia.app"
+               BlueprintName = "Sandia"
+               ReferencedContainer = "container:Sandia.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,10 +29,10 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB6F652D854B8B5C7E02061E"
-               BuildableName = "DvskCoreTests.xctest"
-               BlueprintName = "DvskCoreTests"
-               ReferencedContainer = "container:Dvsk.xcodeproj">
+               BlueprintIdentifier = "72A09060A6351FD6CC35D2C2"
+               BuildableName = "SandiaCoreTests.xctest"
+               BlueprintName = "SandiaCoreTests"
+               ReferencedContainer = "container:Sandia.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,10 +46,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "513AB111303670D6FF58D7BC"
-            BuildableName = "Dvsk.app"
-            BlueprintName = "Dvsk"
-            ReferencedContainer = "container:Dvsk.xcodeproj">
+            BlueprintIdentifier = "2098D780B994F4E70872B9AC"
+            BuildableName = "Sandia.app"
+            BlueprintName = "Sandia"
+            ReferencedContainer = "container:Sandia.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -58,10 +58,10 @@
             parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB6F652D854B8B5C7E02061E"
-               BuildableName = "DvskCoreTests.xctest"
-               BlueprintName = "DvskCoreTests"
-               ReferencedContainer = "container:Dvsk.xcodeproj">
+               BlueprintIdentifier = "72A09060A6351FD6CC35D2C2"
+               BuildableName = "SandiaCoreTests.xctest"
+               BlueprintName = "SandiaCoreTests"
+               ReferencedContainer = "container:Sandia.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -82,10 +82,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "513AB111303670D6FF58D7BC"
-            BuildableName = "Dvsk.app"
-            BlueprintName = "Dvsk"
-            ReferencedContainer = "container:Dvsk.xcodeproj">
+            BlueprintIdentifier = "2098D780B994F4E70872B9AC"
+            BuildableName = "Sandia.app"
+            BlueprintName = "Sandia"
+            ReferencedContainer = "container:Sandia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -101,10 +101,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "513AB111303670D6FF58D7BC"
-            BuildableName = "Dvsk.app"
-            BlueprintName = "Dvsk"
-            ReferencedContainer = "container:Dvsk.xcodeproj">
+            BlueprintIdentifier = "2098D780B994F4E70872B9AC"
+            BuildableName = "Sandia.app"
+            BlueprintName = "Sandia"
+            ReferencedContainer = "container:Sandia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>

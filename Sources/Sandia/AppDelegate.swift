@@ -17,7 +17,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         engine.shutdown()
     }
 
-    /// Restore colours on Ctrl-C and `kill -TERM`. (`kill -9` cannot be caught; use `Dvsk --reset`.)
+    /// Restore colours on Ctrl-C and `kill -TERM`. (`kill -9` cannot be caught; use `Sandia --reset`.)
     private func installSignalHandlers() {
         for sig in [SIGINT, SIGTERM] {
             signal(sig, SIG_IGN)

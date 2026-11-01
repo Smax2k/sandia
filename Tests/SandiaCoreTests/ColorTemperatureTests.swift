@@ -1,5 +1,5 @@
 import XCTest
-@testable import DvskCore
+@testable import SandiaCore
 
 final class ColorTemperatureTests: XCTestCase {
     func testDaylightIsNeutral() {

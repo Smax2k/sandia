@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-import DvskCore
+import SandiaCore
 
 /// The 24-hour target-temperature curve for the current schedule.
 ///

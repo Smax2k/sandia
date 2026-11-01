@@ -24,9 +24,9 @@ jobs:
           TAG: ${{ github.event.release.tag_name || inputs.tag }}
         run: |
           VERSION="${TAG#v}"
-          gh release download "$TAG" --pattern "Dvsk-$VERSION.dmg"
+          gh release download "$TAG" --pattern "Sandia-$VERSION.dmg"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-          echo "SHA256=$(sha256sum "Dvsk-$VERSION.dmg" | cut -d' ' -f1)" >> "$GITHUB_ENV"
+          echo "SHA256=$(sha256sum "Sandia-$VERSION.dmg" | cut -d' ' -f1)" >> "$GITHUB_ENV"
 
       - uses: actions/checkout@v4
         with:

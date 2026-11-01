@@ -1,7 +1,7 @@
 import XCTest
-@testable import DvskCore
+@testable import SandiaCore
 
-final class DvskStateTests: XCTestCase {
+final class SandiaStateTests: XCTestCase {
     private var calendar: Calendar = {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "UTC")!
@@ -13,14 +13,14 @@ final class DvskStateTests: XCTestCase {
     }
 
     func testDefaultStateAtNoonIsNeutralScheduled() {
-        let result = DvskState().resolve(at: date(12), calendar: calendar)
+        let result = SandiaState().resolve(at: date(12), calendar: calendar)
         XCTAssertEqual(result.mode, .scheduled)
         XCTAssertEqual(result.rgb, RGB.neutral)
         XCTAssertEqual(result.kelvin ?? 0, 6500, accuracy: 0.5)
     }
 
     func testScheduledAtNightUsesNightTemperature() {
-        let result = DvskState().resolve(at: date(23), calendar: calendar)
+        let result = SandiaState().resolve(at: date(23), calendar: calendar)
         XCTAssertEqual(result.mode, .scheduled)
         XCTAssertEqual(result.kelvin ?? 0, 2700, accuracy: 0.5)
         let expected = ColorTemperature.rgb(kelvin: 2700)
@@ -30,7 +30,7 @@ final class DvskStateTests: XCTestCase {
     }
 
     func testDisabledIsNeutralEvenAtNight() {
-        var state = DvskState()
+        var state = SandiaState()
         state.isEnabled = false
         let result = state.resolve(at: date(23), calendar: calendar)
         XCTAssertEqual(result.mode, .disabled)
@@ -39,7 +39,7 @@ final class DvskStateTests: XCTestCase {
     }
 
     func testDisabledBeatsDarkroomAndPause() {
-        var state = DvskState()
+        var state = SandiaState()
         state.isEnabled = false
         state.isDarkroom = true
         state.pausedUntil = date(23)
@@ -49,7 +49,7 @@ final class DvskStateTests: XCTestCase {
     }
 
     func testPausedUntilFutureIsNeutral() {
-        var state = DvskState()
+        var state = SandiaState()
         state.pausedUntil = date(23, 30)
         let result = state.resolve(at: date(23), calendar: calendar)
         XCTAssertEqual(result.mode, .paused)
@@ -57,7 +57,7 @@ final class DvskStateTests: XCTestCase {
     }
 
     func testPausedBeatsDarkroom() {
-        var state = DvskState()
+        var state = SandiaState()
         state.isDarkroom = true
         state.pausedUntil = date(23, 30)
         let result = state.resolve(at: date(23), calendar: calendar)
@@ -66,7 +66,7 @@ final class DvskStateTests: XCTestCase {
     }
 
     func testExpiredPauseResumesSchedule() {
-        var state = DvskState()
+        var state = SandiaState()
         state.pausedUntil = date(22)
         let result = state.resolve(at: date(23), calendar: calendar)
         XCTAssertEqual(result.mode, .scheduled)
@@ -74,13 +74,13 @@ final class DvskStateTests: XCTestCase {
     }
 
     func testPauseEndingExactlyNowIsExpired() {
-        var state = DvskState()
+        var state = SandiaState()
         state.pausedUntil = date(23)
         XCTAssertEqual(state.resolve(at: date(23), calendar: calendar).mode, .scheduled)
     }
 
     func testDarkroomIsRedAtDefaultBrightness() {
-        var state = DvskState()
+        var state = SandiaState()
         state.isDarkroom = true
         let result = state.resolve(at: date(12), calendar: calendar)
         XCTAssertEqual(result.mode, .darkroom)
@@ -89,7 +89,7 @@ final class DvskStateTests: XCTestCase {
     }
 
     func testDarkroomBrightnessIsConfigurable() {
-        var state = DvskState()
+        var state = SandiaState()
         state.isDarkroom = true
         state.darkroomBrightness = 0.4
         XCTAssertEqual(state.resolve(at: date(12), calendar: calendar).rgb,
@@ -97,7 +97,7 @@ final class DvskStateTests: XCTestCase {
     }
 
     func testDarkroomBrightnessIsClampedToUnitRange() {
-        var state = DvskState()
+        var state = SandiaState()
         state.isDarkroom = true
         state.darkroomBrightness = 3
         XCTAssertEqual(state.resolve(at: date(12), calendar: calendar).rgb,

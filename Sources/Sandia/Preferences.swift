@@ -1,5 +1,5 @@
 import Foundation
-import DvskCore
+import SandiaCore
 
 /// UserDefaults-backed settings. Observable so SwiftUI and the engine react to edits.
 final class Preferences: ObservableObject {
@@ -129,15 +129,15 @@ final class Preferences: ObservableObject {
     }
 
     /// Effective state at `date`, schedule included.
-    func state(at date: Date) -> DvskState {
-        DvskState(isEnabled: isEnabled,
+    func state(at date: Date) -> SandiaState {
+        SandiaState(isEnabled: isEnabled,
                   pausedUntil: pausedUntil,
                   isDarkroom: isDarkroom,
                   darkroomBrightness: darkroomBrightness,
                   schedule: schedule(at: date))
     }
 
-    var state: DvskState {
+    var state: SandiaState {
         state(at: Date())
     }
 }

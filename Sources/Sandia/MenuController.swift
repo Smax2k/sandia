@@ -1,5 +1,5 @@
 import AppKit
-import DvskCore
+import SandiaCore
 import SwiftUI
 
 /// Owns the status item and its popover. The popover is the only settings surface.
@@ -112,7 +112,7 @@ final class MenuController: NSObject, NSPopoverDelegate {
         // Follows the clock schedule only, so disabling or pausing never changes the icon.
         let night = preferences.state.schedule.nightWeight(at: Date()) >= 0.5
         let symbol = resolved.mode == .darkroom || night ? "moon" : "sun.max"
-        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "Dvsk")
+        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "Sandia")
         image?.isTemplate = true
         statusItem.button?.image = image
         statusItem.button?.imagePosition = .imageLeading

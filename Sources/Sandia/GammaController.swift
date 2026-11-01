@@ -1,5 +1,5 @@
 import CoreGraphics
-import DvskCore
+import SandiaCore
 
 /// Writes per-display gamma tables: `original * factor`, per channel.
 /// Original tables are captured once per display so repeated applies never compound.
