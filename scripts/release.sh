@@ -68,7 +68,13 @@ asc notarization staple --file "$APP" --confirm
 xcrun stapler validate "$APP"
 
 # DMG de distribution.
-DMG="$OUT/Sandia-$VERSION.dmg"
+#
+# Il va dans `dist/`, à la racine du projet : un dossier visible dans le Finder.
+# Garder l'app et les artefacts de build dans `.build/` (caché), mais jamais le
+# livrable qu'on va glisser sur une autre machine.
+DMG_DIR="dist"
+mkdir -p "$DMG_DIR"
+DMG="$DMG_DIR/Sandia-$VERSION.dmg"
 STAGE="$WORK/dmg"
 mkdir -p "$STAGE"
 ditto "$APP" "$STAGE/Sandia.app"
