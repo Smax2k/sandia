@@ -13,6 +13,7 @@
 		16C66DCBDADC3A93F5D1CD0A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE97525525FC56E794FB945F /* MenuController.swift */; };
 		1832CD51B1BB757B89F7C7AD /* SolarTimesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F504F3157FCAD0872EBDAD2 /* SolarTimesTests.swift */; };
 		237EC7575C9F81D44DDAF6EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78EBBE462F5D0378E8DB1C5 /* AppDelegate.swift */; };
+		267E88265EA66C7E85F07479 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215BF4744361A962845848B8 /* LoginItem.swift */; };
 		2CB9B207E0A1E45FED256AD9 /* DvskCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC60512D9C62CC2A1F46B01 /* DvskCore.framework */; };
 		338ED3D5A34222E7ADA6C43F /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEDF6B1DBE299E9A9DF70D7 /* Preferences.swift */; };
 		621C9F8AA39CDDF533F2B23B /* DvskState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC111C260BEFE602E6B4070 /* DvskState.swift */; };
@@ -20,7 +21,7 @@
 		78FEC335213F47698C2C1E03 /* DvskCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC60512D9C62CC2A1F46B01 /* DvskCore.framework */; };
 		7EB139529A1B299C1E53EF6E /* DvskCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CC60512D9C62CC2A1F46B01 /* DvskCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A3D8B985145530D8040B29E /* DvskStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD64DB9467BED681DD689F8 /* DvskStateTests.swift */; };
-		A5EC37BEBFF61EB2B60AE2F0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0BDD08373C469004B0EF38 /* SettingsView.swift */; };
+		B6649881C4CC39806BFD7AFE /* PanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B25D25173E1312409B93504 /* PanelView.swift */; };
 		B7C9C24EFA4317AD3E8DBDB1 /* ColorTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935053CF6F5270CDD7921A97 /* ColorTemperature.swift */; };
 		CC9587223FC17F281CC215BF /* ColorTemperatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B7ADC00ADA05A48A8E9FCF /* ColorTemperatureTests.swift */; };
 		CE9FC80A33DE40972362E8C5 /* GammaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCACBFF528537A06AECED6C8 /* GammaController.swift */; };
@@ -74,6 +75,8 @@
 
 /* Begin PBXFileReference section */
 		16A10638F71377D804A574F3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		1B25D25173E1312409B93504 /* PanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelView.swift; sourceTree = "<group>"; };
+		215BF4744361A962845848B8 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		21EFFFD0E76713297707F14E /* ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
 		3D48EBF52497A1564DB8ED43 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 		3F504F3157FCAD0872EBDAD2 /* SolarTimesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarTimesTests.swift; sourceTree = "<group>"; };
@@ -81,7 +84,6 @@
 		4CC60512D9C62CC2A1F46B01 /* DvskCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DvskCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DEDF6B1DBE299E9A9DF70D7 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		53DE2981CDDE39B079CFC6CC /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
-		5B0BDD08373C469004B0EF38 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		725C930F7725225E7DA92007 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		79352A3869336C169D823690 /* KeyboardBacklight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardBacklight.swift; sourceTree = "<group>"; };
 		8360C2F1710B0B205F84E719 /* DvskCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DvskCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,10 +124,11 @@
 				3D48EBF52497A1564DB8ED43 /* Engine.swift */,
 				FCACBFF528537A06AECED6C8 /* GammaController.swift */,
 				79352A3869336C169D823690 /* KeyboardBacklight.swift */,
+				215BF4744361A962845848B8 /* LoginItem.swift */,
 				16A10638F71377D804A574F3 /* main.swift */,
 				FE97525525FC56E794FB945F /* MenuController.swift */,
+				1B25D25173E1312409B93504 /* PanelView.swift */,
 				4DEDF6B1DBE299E9A9DF70D7 /* Preferences.swift */,
-				5B0BDD08373C469004B0EF38 /* SettingsView.swift */,
 			);
 			path = Dvsk;
 			sourceTree = "<group>";
@@ -344,9 +347,10 @@
 				E7154C96AA220E3FC8296C8E /* Engine.swift in Sources */,
 				CE9FC80A33DE40972362E8C5 /* GammaController.swift in Sources */,
 				D8E0F60E1869C82021A0C579 /* KeyboardBacklight.swift in Sources */,
+				267E88265EA66C7E85F07479 /* LoginItem.swift in Sources */,
 				16C66DCBDADC3A93F5D1CD0A /* MenuController.swift in Sources */,
+				B6649881C4CC39806BFD7AFE /* PanelView.swift in Sources */,
 				338ED3D5A34222E7ADA6C43F /* Preferences.swift in Sources */,
-				A5EC37BEBFF61EB2B60AE2F0 /* SettingsView.swift in Sources */,
 				0D8357CE8D64A7CE3D07D17F /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
