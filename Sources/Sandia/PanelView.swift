@@ -103,10 +103,10 @@ struct PanelView: View {
     private var nightSection: some View {
         section {
             sliderRow("Température de nuit", value: kelvinText(preferences.nightKelvin)) {
-                Slider(value: Binding(get: { preferences.nightKelvin },
+                snappedSlider(Binding(get: { preferences.nightKelvin },
                                       set: { actions.setNightKelvin($0) }),
-                       in: 1200...6500,
-                       step: 10)
+                              in: 1200...6500,
+                              step: 10)
             }
         }
     }
@@ -114,22 +114,32 @@ struct PanelView: View {
     private var daySection: some View {
         section {
             sliderRow("Température de jour", value: kelvinText(preferences.dayKelvin)) {
-                Slider(value: $preferences.dayKelvin, in: 1200...6500, step: 10)
+                snappedSlider($preferences.dayKelvin, in: 1200...6500, step: 10)
             }
         }
     }
 
     private var scheduleSection: some View {
         section {
-            timeRow("Coucher", selection: timeBinding(\.nightStart))
-            timeRow("Lever", selection: timeBinding(\.nightEnd))
-            Stepper(value: $preferences.transitionMinutes, in: 0...180, step: 5) {
-                HStack(spacing: 8) {
-                    Text("Fondu")
-                    Spacer(minLength: 8)
-                    Text("\(preferences.transitionMinutes) min")
-                        .monospacedDigit()
-                        .foregroundStyle(.secondary)
+            HStack(alignment: .top, spacing: 10) {
+                scheduleColumn("Coucher") {
+                    DatePicker("", selection: timeBinding(\.nightStart), displayedComponents: .hourAndMinute)
+                        .labelsHidden()
+                        .fixedSize()
+                }
+                scheduleColumn("Lever") {
+                    DatePicker("", selection: timeBinding(\.nightEnd), displayedComponents: .hourAndMinute)
+                        .labelsHidden()
+                        .fixedSize()
+                }
+                scheduleColumn("Fondu") {
+                    HStack(spacing: 2) {
+                        Text("\(preferences.transitionMinutes) min")
+                            .monospacedDigit()
+                            .foregroundStyle(.secondary)
+                        Stepper("", value: $preferences.transitionMinutes, in: 0...180, step: 5)
+                            .labelsHidden()
+                    }
                 }
             }
         }
@@ -146,8 +156,12 @@ struct PanelView: View {
                     .toggleStyle(.switch)
                     .controlSize(.small)
             }
-            sliderRow("Luminosité", value: percentText(preferences.darkroomBrightness)) {
-                Slider(value: $preferences.darkroomBrightness, in: 0...1)
+            // The slider only concerns the darkroom red intensity, so it is
+            // meaningless — and looks like a screen setting — while it is off.
+            if preferences.isDarkroom {
+                sliderRow("Intensité Darkroom", value: percentText(preferences.darkroomBrightness)) {
+                    Slider(value: $preferences.darkroomBrightness, in: 0...1)
+                }
             }
         }
     }
@@ -239,14 +253,27 @@ struct PanelView: View {
         }
     }
 
-    private func timeRow(_ title: String, selection: Binding<Date>) -> some View {
-        HStack(spacing: 8) {
+    private func scheduleColumn<Content: View>(_ title: String,
+                                               @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
             Text(title)
-            Spacer(minLength: 8)
-            DatePicker("", selection: selection, displayedComponents: .hourAndMinute)
-                .labelsHidden()
-                .fixedSize()
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+            content()
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    /// AppKit draws tick marks under a `Slider` that carries a `step`, and the
+    /// popover's vibrant background turns them into a white bar. Snapping the
+    /// value in the binding keeps the same granularity without the marks.
+    private func snappedSlider(_ binding: Binding<Double>,
+                               in range: ClosedRange<Double>,
+                               step: Double) -> some View {
+        Slider(value: Binding(get: { binding.wrappedValue },
+                              set: { binding.wrappedValue = ($0 / step).rounded() * step }),
+               in: range)
     }
 
     // MARK: - Derived text

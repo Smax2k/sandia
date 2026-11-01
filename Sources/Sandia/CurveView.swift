@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 import SwiftUI
 import SandiaCore
@@ -86,15 +87,28 @@ struct CurveView: View {
                        with: .color(Color.accentColor),
                        style: StrokeStyle(lineWidth: 1.8, lineCap: .round, lineJoin: .round))
 
-        drawNowMarker(in: &context, width: width, top: top, bottom: bottom, calendar: calendar, y: y, x: x)
-
-        drawAnnotations(in: &context,
-                        samples: samples,
-                        width: width,
-                        top: top,
-                        bottom: bottom,
-                        y: y,
-                        x: x)
+        let marker = drawNowMarker(in: &context,
+                                   width: width,
+                                   top: top,
+                                   bottom: bottom,
+                                   calendar: calendar,
+                                   y: y,
+                                   x: x)
+        let annotations = drawAnnotations(in: &context,
+                                          samples: samples,
+                                          width: width,
+                                          top: top,
+                                          bottom: bottom,
+                                          y: y,
+                                          x: x)
+        drawNowLabel(in: &context,
+                     text: marker.label,
+                     dot: marker.dot,
+                     radius: marker.radius,
+                     width: width,
+                     top: top,
+                     bottom: bottom,
+                     avoiding: annotations)
 
         drawTimeAxis(in: &context, width: width, height: size.height, x: x)
     }
@@ -118,29 +132,112 @@ struct CurveView: View {
         }
     }
 
+    /// The marker is deliberately drawn inside the plot: at 23:59 the true time
+    /// coordinate sits on the frame edge, where a dot would be clipped in half.
     private func drawNowMarker(in context: inout GraphicsContext,
                                width: CGFloat,
                                top: CGFloat,
                                bottom: CGFloat,
                                calendar: Calendar,
                                y: (Double) -> CGFloat,
-                               x: (Double) -> CGFloat) {
+                               x: (Double) -> CGFloat) -> (dot: CGPoint, radius: CGFloat, label: String) {
         let parts = calendar.dateComponents([.hour, .minute, .second], from: now)
-        let minute = Double(parts.hour ?? 0) * 60
-            + Double(parts.minute ?? 0)
+        let hour = parts.hour ?? 0
+        let minuteOfHour = parts.minute ?? 0
+        let minute = Double(hour) * 60
+            + Double(minuteOfHour)
             + Double(parts.second ?? 0) / 60
-        let markerX = x(minute)
+
+        let radius: CGFloat = 4.5
+        let halo: CGFloat = 2.5
+        let inset = radius + halo
+        let markerX = min(max(x(minute), inset), max(width - inset, inset))
+        let markerY = min(max(y(schedule.targetKelvin(at: now, calendar: calendar)),
+                              top + inset), bottom - inset)
 
         var marker = Path()
         marker.move(to: CGPoint(x: markerX, y: top))
         marker.addLine(to: CGPoint(x: markerX, y: bottom))
         context.stroke(marker,
-                       with: .color(Color.primary.opacity(0.30)),
-                       style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
+                       with: .color(Color.accentColor),
+                       style: StrokeStyle(lineWidth: 1.2, lineCap: .round))
 
-        let markerY = min(max(y(schedule.targetKelvin(at: now, calendar: calendar)), top + 3), bottom - 3)
-        let dot = CGRect(x: markerX - 2.5, y: markerY - 2.5, width: 5, height: 5)
-        context.fill(Path(ellipseIn: dot), with: .color(Color.accentColor))
+        // A light rim keeps the dot readable over the accent curve, the night
+        // bands and the plateau lines; primary follows the system appearance.
+        let haloRect = CGRect(x: markerX - radius - halo, y: markerY - radius - halo,
+                              width: (radius + halo) * 2, height: (radius + halo) * 2)
+        context.fill(Path(ellipseIn: haloRect), with: .color(Color.primary.opacity(0.85)))
+        let dotRect = CGRect(x: markerX - radius, y: markerY - radius,
+                             width: radius * 2, height: radius * 2)
+        context.fill(Path(ellipseIn: dotRect), with: .color(Color.accentColor))
+
+        return (CGPoint(x: markerX, y: markerY),
+                radius + halo,
+                String(format: "%02d:%02d", hour, minuteOfHour))
+    }
+
+    /// The time sits beside the dot, on the side that stays inside the plot and
+    /// clear of the temperature labels.
+    private func drawNowLabel(in context: inout GraphicsContext,
+                              text: String,
+                              dot: CGPoint,
+                              radius: CGFloat,
+                              width: CGFloat,
+                              top: CGFloat,
+                              bottom: CGFloat,
+                              avoiding obstacles: [CGRect]) {
+        let font = Font.system(size: 9.5, weight: .semibold).monospacedDigit()
+        let resolved = context.resolve(Text(text).font(font).foregroundColor(Color.primary))
+        let textSize = resolved.measure(in: CGSize(width: width, height: 40))
+        let chipSize = CGSize(width: textSize.width + 8, height: textSize.height + 2)
+        let gap = radius + 2
+        let plot = CGRect(x: 0, y: top, width: width, height: bottom - top)
+
+        // Temperature labels sit above their plateau line, so the space under
+        // the dot is the safest place for the time; sides and top are fallbacks
+        // for a marker close to the bottom of the plot.
+        let below = gap + chipSize.height / 2
+        let beside = gap + chipSize.width / 2
+        let farBelow = below + chipSize.height + 6
+        let farBeside = beside + chipSize.width + 8
+        let offsets: [CGSize] = [
+            CGSize(width: 0, height: below),
+            CGSize(width: 0, height: -below),
+            CGSize(width: beside, height: 0),
+            CGSize(width: -beside, height: 0),
+            CGSize(width: beside, height: below),
+            CGSize(width: -beside, height: below),
+            CGSize(width: beside, height: -below),
+            CGSize(width: -beside, height: -below),
+            CGSize(width: 0, height: -farBelow),
+            CGSize(width: 0, height: farBelow),
+            CGSize(width: farBeside, height: 0),
+            CGSize(width: -farBeside, height: 0),
+        ]
+
+        func clamped(_ center: CGPoint) -> CGRect {
+            let x = min(max(center.x - chipSize.width / 2, plot.minX + 1),
+                        max(plot.maxX - chipSize.width - 1, plot.minX + 1))
+            let y = min(max(center.y - chipSize.height / 2, plot.minY + 1),
+                        max(plot.maxY - chipSize.height - 1, plot.minY + 1))
+            return CGRect(origin: CGPoint(x: x, y: y), size: chipSize)
+        }
+
+        let dotRect = CGRect(x: dot.x - radius, y: dot.y - radius,
+                             width: radius * 2, height: radius * 2).insetBy(dx: -1, dy: -1)
+        let blocked = obstacles + [dotRect]
+        var chip = clamped(CGPoint(x: dot.x, y: dot.y - farBelow))
+        for offset in offsets {
+            let candidate = clamped(CGPoint(x: dot.x + offset.width, y: dot.y + offset.height))
+            if !blocked.contains(where: { $0.intersects(candidate.insetBy(dx: -1, dy: -1)) }) {
+                chip = candidate
+                break
+            }
+        }
+
+        let background = Path(roundedRect: chip, cornerRadius: 3)
+        context.fill(background, with: .color(Color(nsColor: .windowBackgroundColor).opacity(0.92)))
+        context.draw(resolved, at: CGPoint(x: chip.midX, y: chip.midY), anchor: .center)
     }
 
     private func drawAnnotations(in context: inout GraphicsContext,
@@ -149,10 +246,11 @@ struct CurveView: View {
                                  top: CGFloat,
                                  bottom: CGFloat,
                                  y: (Double) -> CGFloat,
-                                 x: (Double) -> CGFloat) {
+                                 x: (Double) -> CGFloat) -> [CGRect] {
         let font = Font.system(size: 9.5, weight: .medium).monospacedDigit()
         let style = Color.secondary
         let horizontalMargin: CGFloat = 30
+        var drawn: [CGRect] = []
 
         func place(_ text: String, at point: CGPoint, preferAbove: Bool) {
             let label = context.resolve(Text(text).font(font).foregroundColor(style))
@@ -162,6 +260,11 @@ struct CurveView: View {
                 : bottom - point.y < 15
             let labelY = min(max(above ? point.y - 8 : point.y + 9, top + 6), bottom - 5)
             context.draw(label, at: CGPoint(x: labelX, y: labelY), anchor: .center)
+            // A slightly generous box, so the current-time label keeps clear of
+            // the text even if its measured bounds are tighter than the ink.
+            let estimated = CGSize(width: CGFloat(text.count) * 6.2 + 2, height: 13)
+            drawn.append(CGRect(x: labelX - estimated.width / 2, y: labelY - estimated.height / 2,
+                                width: estimated.width, height: estimated.height))
         }
 
         let dayKelvin = schedule.dayKelvin
@@ -172,7 +275,7 @@ struct CurveView: View {
             place(kelvinLabel(dayKelvin),
                   at: CGPoint(x: x(center), y: y(dayKelvin)),
                   preferAbove: true)
-            return
+            return drawn
         }
 
         // Sit on the middle of the widest plateau so the label never crosses a
@@ -186,6 +289,7 @@ struct CurveView: View {
         place(kelvinLabel(nightKelvin),
               at: CGPoint(x: x(nightCenter), y: y(nightKelvin)),
               preferAbove: false)
+        return drawn
     }
 
     /// Middle minute of the longest run of samples resting on `level`.
