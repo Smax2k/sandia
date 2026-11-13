@@ -19,7 +19,7 @@ struct CurveView: View {
         }
         .frame(height: Self.height)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Courbe de température sur 24 heures")
+        .accessibilityLabel(L("Temperature curve over 24 hours"))
         .accessibilityValue(accessibilityValue)
     }
 
@@ -355,6 +355,6 @@ struct CurveView: View {
         let day = "\(kelvinLabel(schedule.dayKelvin))"
         let start = String(format: "%02d:%02d", schedule.nightStart.hour, schedule.nightStart.minute)
         let end = String(format: "%02d:%02d", schedule.nightEnd.hour, schedule.nightEnd.minute)
-        return "Nuit de \(start) à \(end), \(night). Jour \(day)."
+        return L("Night from %@ to %@, %@. Day %@.", start, end, night, day)
     }
 }

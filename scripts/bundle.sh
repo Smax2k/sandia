@@ -50,6 +50,10 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/Sandia"
 cp AppInfo.plist "$APP/Contents/Info.plist"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+# Localized strings live beside the icon; macOS picks by the user's language.
+for locale in Resources/*.lproj; do
+    cp -R "$locale" "$APP/Contents/Resources/"
+done
 if [[ -n "$IDENTITY" ]]; then
     # Notarization requires the hardened runtime and a secure timestamp.
     codesign --force --options runtime --timestamp --sign "$IDENTITY" "$APP"

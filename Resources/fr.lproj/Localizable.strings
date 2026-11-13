@@ -1,0 +1,29 @@
+/* Sandia — traduction française. */
+
+"Enabled" = "Activé";
+"Sunset" = "Coucher";
+"Sunrise" = "Lever";
+"Night temperature" = "Température de nuit";
+"Day temperature" = "Température de jour";
+"Darkroom intensity" = "Intensité Darkroom";
+"Darkroom" = "Darkroom";
+"Fade" = "Fondu";
+"Pause" = "Pause";
+"Resume" = "Reprendre";
+"Pause 1 h" = "Suspendre 1 h";
+"Night" = "Nuit";
+"Day" = "Jour";
+"Off" = "Désactivé";
+"Darkroom · %@" = "Darkroom · %@";
+"Pause · %d min" = "Pause · %d min";
+"Keyboard backlight" = "Rétroéclairage";
+"Adjust in low light" = "Ajuster en faible lumière";
+"Launch at login" = "Lancer à l'ouverture";
+"Unavailable from a build folder." = "Indisponible depuis un dossier de build.";
+"Allow it in System Settings › General › Login Items." = "À autoriser dans Réglages Système › Général › Ouverture.";
+"Quit Sandia" = "Quitter Sandia";
+
+/* Accessibilité de la courbe. */
+
+"Temperature curve over 24 hours" = "Courbe de température sur 24 heures";
+"Night from %@ to %@, %@. Day %@." = "Nuit de %@ à %@, %@. Jour %@.";

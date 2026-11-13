@@ -13,9 +13,11 @@
 		1430CF47211B81F467BAE170 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894530263FE43BBA89FA28D1 /* Schedule.swift */; };
 		20BA50D11A195548815ECB27 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECE1AF67CB0273D675B2139 /* Engine.swift */; };
 		2C9A7A4B42FA993E3FBA0E7D /* SandiaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E612C0236B94346DE78B7F1 /* SandiaCore.framework */; };
+		3098D41712E55B4FFE9FFDFA /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441165C2F5908FFDC80A1710 /* Localization.swift */; };
 		3A978281705DBA15CBE4B372 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E377FB5854F096B97DF1CCC2 /* Preferences.swift */; };
 		40F57776679A01F08B3FB147 /* SandiaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17967863D1BB03CE036C3F2 /* SandiaState.swift */; };
 		4607876D3E6EA01FB5720F6C /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EB190D2ADEE8D8B9D9F9B8 /* ScheduleTests.swift */; };
+		53AAD645010F9EBD08C669A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C70E0CD48258AE85886E7B73 /* Localizable.strings */; };
 		5AF8270A4644DFF9C078FB93 /* ColorTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF61B9564E046B21D3C248D /* ColorTemperature.swift */; };
 		6AFAE07DC1C7AA28B0C7B784 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A897F9D052FDE32883FEBE /* MenuController.swift */; };
 		70D76BC72E68C694B81222D5 /* CurveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196E4ED3F987995B15FA0ED1 /* CurveView.swift */; };
@@ -82,7 +84,9 @@
 		196E4ED3F987995B15FA0ED1 /* CurveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurveView.swift; sourceTree = "<group>"; };
 		230AD51A1771A38891ED80F1 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		2ECE1AF67CB0273D675B2139 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		441165C2F5908FFDC80A1710 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		48B9F55A0A7266440E0F6377 /* Sandia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sandia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AD31A38D8361AC1214418BA /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4AE9F8322197EE3895C5F671 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4CF3F9DE66541DC8C7AFCAE6 /* SolarTimesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarTimesTests.swift; sourceTree = "<group>"; };
 		4E612C0236B94346DE78B7F1 /* SandiaCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SandiaCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +105,7 @@
 		D9C71C6F74E1CEC97FB13B19 /* SandiaStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandiaStateTests.swift; sourceTree = "<group>"; };
 		E377FB5854F096B97DF1CCC2 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		F17967863D1BB03CE036C3F2 /* SandiaState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandiaState.swift; sourceTree = "<group>"; };
+		FEC3E95F126199CB2870987E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +197,7 @@
 				2ECE1AF67CB0273D675B2139 /* Engine.swift */,
 				83A08777A473600D94D2FFBC /* GammaController.swift */,
 				845D57C676B82BD57BEE7D2C /* KeyboardBacklight.swift */,
+				441165C2F5908FFDC80A1710 /* Localization.swift */,
 				744E0018CB9B46271D3276B0 /* LoginItem.swift */,
 				D5FFB2A041BCAF25AC4FD67D /* main.swift */,
 				B3A897F9D052FDE32883FEBE /* MenuController.swift */,
@@ -204,6 +210,7 @@
 		E491929838BD0AB9F9D7BADA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C70E0CD48258AE85886E7B73 /* Localizable.strings */,
 				230AD51A1771A38891ED80F1 /* AppIcon.icns */,
 			);
 			path = Resources;
@@ -299,6 +306,7 @@
 			knownRegions = (
 				Base,
 				en,
+				fr,
 			);
 			mainGroup = 018D95A11FDEE7FAD6D2A7C2;
 			minimizedProjectReferenceProxies = 1;
@@ -320,6 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9B7DD442F069323FE400055 /* AppIcon.icns in Resources */,
+				53AAD645010F9EBD08C669A1 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +356,7 @@
 				20BA50D11A195548815ECB27 /* Engine.swift in Sources */,
 				769A3EA3CBC89B1626E73AD9 /* GammaController.swift in Sources */,
 				0F56488FA99D2CC00E2158EE /* KeyboardBacklight.swift in Sources */,
+				3098D41712E55B4FFE9FFDFA /* Localization.swift in Sources */,
 				978085F9DA407E6887FB4B6E /* LoginItem.swift in Sources */,
 				6AFAE07DC1C7AA28B0C7B784 /* MenuController.swift in Sources */,
 				88396C4D337B0FF97840510E /* PanelView.swift in Sources */,
@@ -381,6 +391,18 @@
 			targetProxy = F363857FFF2396CCA53E54CC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C70E0CD48258AE85886E7B73 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FEC3E95F126199CB2870987E /* en */,
+				4AD31A38D8361AC1214418BA /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		4D8139136AFC3C384350A2CC /* Release */ = {
@@ -442,7 +464,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = BG55CF653X;
@@ -464,7 +486,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -604,7 +626,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BG55CF653X;
@@ -620,7 +642,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

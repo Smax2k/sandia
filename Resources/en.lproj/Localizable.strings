@@ -1,0 +1,29 @@
+/* Sandia panel — English base localization. */
+
+"Enabled" = "Enabled";
+"Sunset" = "Sunset";
+"Sunrise" = "Sunrise";
+"Night temperature" = "Night temperature";
+"Day temperature" = "Day temperature";
+"Darkroom intensity" = "Darkroom intensity";
+"Darkroom" = "Darkroom";
+"Fade" = "Fade";
+"Pause" = "Pause";
+"Resume" = "Resume";
+"Pause 1 h" = "Pause 1 h";
+"Night" = "Night";
+"Day" = "Day";
+"Off" = "Off";
+"Darkroom · %@" = "Darkroom · %@";
+"Pause · %d min" = "Pause · %d min";
+"Keyboard backlight" = "Keyboard backlight";
+"Adjust in low light" = "Adjust in low light";
+"Launch at login" = "Launch at login";
+"Unavailable from a build folder." = "Unavailable from a build folder.";
+"Allow it in System Settings › General › Login Items." = "Allow it in System Settings › General › Login Items.";
+"Quit Sandia" = "Quit Sandia";
+
+/* Curve accessibility. */
+
+"Temperature curve over 24 hours" = "Temperature curve over 24 hours";
+"Night from %@ to %@, %@. Day %@." = "Night from %@ to %@, %@. Day %@.";

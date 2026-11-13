@@ -62,7 +62,7 @@ struct PanelView: View {
                 Text("Sandia")
                     .font(.system(size: 15, weight: .semibold))
                 Spacer(minLength: 8)
-                Toggle("Activé", isOn: $preferences.isEnabled)
+                Toggle("Enabled", isOn: $preferences.isEnabled)
                     .toggleStyle(.switch)
                     .controlSize(.small)
             }
@@ -97,8 +97,8 @@ struct PanelView: View {
     /// then Darkroom, the fade and the pause sit on a single control strip.
     private var scheduleBlock: some View {
         VStack(alignment: .leading, spacing: 0) {
-            temperatureRow(title: "Coucher",
-                           label: "Température de nuit",
+            temperatureRow(title: L("Sunset"),
+                           label: L("Night temperature"),
                            value: kelvinText(preferences.nightKelvin),
                            time: \.nightStart) {
                 snappedSlider(Binding(get: { preferences.nightKelvin },
@@ -108,8 +108,8 @@ struct PanelView: View {
             }
 
             rowSeparator
-            temperatureRow(title: "Lever",
-                           label: "Température de jour",
+            temperatureRow(title: L("Sunrise"),
+                           label: L("Day temperature"),
                            value: kelvinText(preferences.dayKelvin),
                            time: \.nightEnd) {
                 snappedSlider($preferences.dayKelvin, in: 1200...6500, step: 10)
@@ -122,7 +122,7 @@ struct PanelView: View {
             // meaningless — and looks like a screen setting — while it is off.
             if preferences.isDarkroom {
                 HStack(spacing: 8) {
-                    Text("Intensité Darkroom")
+                    Text("Darkroom intensity")
                     Slider(value: $preferences.darkroomBrightness, in: 0...1)
                     Text(percentText(preferences.darkroomBrightness))
                         .monospacedDigit()
@@ -139,7 +139,7 @@ struct PanelView: View {
     /// Darkroom first, then the fade, and the pause at the trailing edge.
     private var controlStrip: some View {
         HStack(alignment: .top, spacing: 8) {
-            labelledColumn("Darkroom") {
+            labelledColumn(L("Darkroom")) {
                 Toggle("", isOn: Binding(get: { preferences.isDarkroom },
                                          set: { actions.setDarkroom($0) }))
                     .labelsHidden()
@@ -148,7 +148,7 @@ struct PanelView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            labelledColumn("Fondu") {
+            labelledColumn(L("Fade")) {
                 HStack(spacing: 2) {
                     Text("\(preferences.transitionMinutes) min")
                         .monospacedDigit()
@@ -159,8 +159,8 @@ struct PanelView: View {
             }
             .frame(maxWidth: .infinity, alignment: .center)
 
-            labelledColumn("Pause") {
-                Button(isPaused ? "Reprendre" : "Suspendre 1 h") { actions.togglePause() }
+            labelledColumn(L("Pause")) {
+                Button(isPaused ? L("Resume") : L("Pause 1 h")) { actions.togglePause() }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
                     .disabled(!preferences.isEnabled)
@@ -203,18 +203,17 @@ struct PanelView: View {
                     .fixedSize()
                     .font(.body.monospacedDigit())
             }
-            .frame(width: 64, alignment: .leading)
         }
     }
 
     private var keyboardSection: some View {
         section {
-            sliderRow("Rétroéclairage", value: "\(Int(model.backlightPercent.rounded())) %") {
+            sliderRow(L("Keyboard backlight"), value: "\(Int(model.backlightPercent.rounded())) %") {
                 Slider(value: Binding(get: { model.backlightPercent },
                                       set: { actions.setBacklight($0) }),
                        in: 0...100)
             }
-            Toggle("Ajuster en faible lumière",
+            Toggle("Adjust in low light",
                    isOn: Binding(get: { model.backlightAuto },
                                  set: { _ in actions.toggleBacklightAuto() }))
         }
@@ -225,17 +224,17 @@ struct PanelView: View {
     private var footer: some View {
         VStack(alignment: .leading, spacing: 8) {
             VStack(alignment: .leading, spacing: 4) {
-                Toggle("Lancer à l'ouverture",
+                Toggle("Launch at login",
                        isOn: Binding(get: { model.launchAtLogin },
                                      set: { actions.setLaunchAtLogin($0) }))
                     .disabled(!model.launchAtLoginAvailable)
 
                 if !model.launchAtLoginAvailable {
-                    Text("Indisponible depuis un dossier de build.")
+                    Text("Unavailable from a build folder.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else if model.launchAtLoginNeedsApproval {
-                    Text("À autoriser dans Réglages Système › Général › Ouverture.")
+                    Text("Allow it in System Settings › General › Login Items.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -243,7 +242,7 @@ struct PanelView: View {
 
             HStack(spacing: 0) {
                 Spacer(minLength: 0)
-                Button("Quitter Sandia") { actions.quit() }
+                Button("Quit Sandia") { actions.quit() }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
             }
@@ -318,14 +317,14 @@ struct PanelView: View {
         switch model.resolved.mode {
         case .scheduled:
             let night = preferences.state.schedule.nightWeight(at: Date()) >= 0.5
-            return night ? "Nuit" : "Jour"
+            return night ? L("Night") : L("Day")
         case .darkroom:
-            return "Darkroom · \(percentText(preferences.darkroomBrightness))"
+            return L("Darkroom · %@", percentText(preferences.darkroomBrightness))
         case .paused:
-            guard let minutes = pausedMinutesLeft else { return "Pause" }
-            return "Pause · \(minutes) min"
+            guard let minutes = pausedMinutesLeft else { return L("Pause") }
+            return L("Pause · %d min", minutes)
         case .disabled:
-            return "Désactivé"
+            return L("Off")
         }
     }
 
