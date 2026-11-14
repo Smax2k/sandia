@@ -15,8 +15,11 @@ final class SandiaStateTests: XCTestCase {
     func testDefaultStateAtNoonIsNeutralScheduled() {
         let result = SandiaState().resolve(at: date(12), calendar: calendar)
         XCTAssertEqual(result.mode, .scheduled)
-        XCTAssertEqual(result.rgb, RGB.neutral)
         XCTAssertEqual(result.kelvin ?? 0, 6500, accuracy: 0.5)
+        // The default day temperature is 4 K below D65 (6504 K): the residual
+        // tint stays far below what an eye can see.
+        XCTAssertEqual(result.rgb, ColorTemperature.rgb(kelvin: 6500))
+        XCTAssertLessThan(result.rgb.maxDistance(to: .neutral), 0.001)
     }
 
     func testScheduledAtNightUsesNightTemperature() {
