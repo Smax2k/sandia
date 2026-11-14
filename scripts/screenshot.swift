@@ -10,6 +10,7 @@
 //       Sources/SandiaCore/*.swift \
 //       Sources/Sandia/Preferences.swift \
 //       Sources/Sandia/PanelView.swift \
+//       Sources/Sandia/ScrollWheelSlider.swift \
 //       Sources/Sandia/CurveView.swift \
 //       Sources/Sandia/Localization.swift \
 //       scripts/screenshot.swift -o .build/screenshot
@@ -54,6 +55,7 @@ struct Screenshot {
         model.launchAtLoginAvailable = true
 
         let actions = PanelActions(
+            setDayKelvin: { _ in },
             setNightKelvin: { _ in },
             setDarkroom: { _ in },
             togglePause: {},

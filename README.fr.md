@@ -15,9 +15,10 @@ macOS 15 (Sequoia) ou plus récent. L'app vit dans `/Applications` : c'est de l�
 ## Ce qu'elle fait
 
 - Courbe de température sur 24 h, avec un repère d'heure lisible.
-- Températures de nuit et de jour réglables, de 1 200 K à 6 500 K.
+- Températures de nuit et de jour réglables, de 1 000 K à 12 000 K, neutres à 6 504 K (D65).
 - Fondu progressif autour du coucher et du lever.
 - Pause d'une heure, sans perdre la courbe.
+- Molette et défilement à deux doigts sur le curseur sous le pointeur.
 - **Darkroom** : écran rouge très sombre pour la nuit.
 - Rétroéclairage clavier, y compris le réglage automatique en faible lumière.
 - Lancement à l'ouverture.
@@ -38,7 +39,7 @@ xcodegen generate
 xcodebuild -project Sandia.xcodeproj -scheme Sandia -configuration Release build
 ```
 
-Tests (61) :
+Tests (78) :
 
 ```sh
 swift test
@@ -62,6 +63,7 @@ swift build -c debug
 BIN=$(swift build -c debug --show-bin-path)
 swiftc -swift-version 5 -I "$BIN" \
     Sources/Sandia/Preferences.swift Sources/Sandia/PanelView.swift \
+    Sources/Sandia/ScrollWheelSlider.swift \
     Sources/Sandia/CurveView.swift Sources/Sandia/Localization.swift \
     scripts/screenshot.swift "$BIN/SandiaCore.o" -o .build/screenshot
 .build/screenshot docs/screenshot.png -AppleLocale en_US -AppleLanguages '(en)'
