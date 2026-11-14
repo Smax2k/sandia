@@ -19,6 +19,7 @@ final class PanelModel: ObservableObject {
 
 /// Side effects that cannot live in a SwiftUI binding.
 struct PanelActions {
+    var setDayKelvin: (Double) -> Void
     var setNightKelvin: (Double) -> Void
     var setDarkroom: (Bool) -> Void
     var togglePause: () -> Void
@@ -56,27 +57,39 @@ struct PanelView: View {
 
     // MARK: - Header
 
+    /// One row only: the app name and its switch on the left, the applied
+    /// temperature with its small mode word on the right. The temperature keeps
+    /// its full width — it is the headline — so the mode word is the flexible
+    /// part if a label ever needs the room. Both groups stay on a single line,
+    /// so neither wraps.
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 12) {
+        HStack(alignment: .firstTextBaseline, spacing: 0) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Text("Sandia")
                     .font(.system(size: 15, weight: .semibold))
-                Spacer(minLength: 8)
+                    .lineLimit(1)
+                    .fixedSize()
                 Toggle("Enabled", isOn: $preferences.isEnabled)
                     .toggleStyle(.switch)
                     .controlSize(.small)
+                    .fixedSize()
             }
+            .layoutPriority(1)
 
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Spacer(minLength: 8)
+
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text(appliedTemperature)
-                    .font(.system(size: 28, weight: .semibold))
+                    .font(.system(size: 24, weight: .semibold))
                     .monospacedDigit()
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false)
                 Text(modeLabel)
-                    .font(.callout)
+                    .font(.caption)
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
-                Spacer(minLength: 0)
+                    .truncationMode(.tail)
             }
         }
         .padding(.horizontal, 14)
@@ -101,10 +114,8 @@ struct PanelView: View {
                            label: L("Night temperature"),
                            value: kelvinText(preferences.nightKelvin),
                            time: \.nightStart) {
-                snappedSlider(Binding(get: { preferences.nightKelvin },
-                                      set: { actions.setNightKelvin($0) }),
-                              in: 1200...6500,
-                              step: 10)
+                temperatureSlider(Binding(get: { preferences.nightKelvin },
+                                          set: { actions.setNightKelvin($0) }))
             }
 
             rowSeparator
@@ -112,7 +123,8 @@ struct PanelView: View {
                            label: L("Day temperature"),
                            value: kelvinText(preferences.dayKelvin),
                            time: \.nightEnd) {
-                snappedSlider($preferences.dayKelvin, in: 1200...6500, step: 10)
+                temperatureSlider(Binding(get: { preferences.dayKelvin },
+                                          set: { actions.setDayKelvin($0) }))
             }
 
             rowSeparator
@@ -124,6 +136,7 @@ struct PanelView: View {
                 HStack(spacing: 8) {
                     Text("Darkroom intensity")
                     Slider(value: $preferences.darkroomBrightness, in: 0...1)
+                        .scrollWheelValue($preferences.darkroomBrightness)
                     Text(percentText(preferences.darkroomBrightness))
                         .monospacedDigit()
                         .foregroundStyle(.secondary)
@@ -206,12 +219,17 @@ struct PanelView: View {
         }
     }
 
+    /// The backlight speaks percent: the slider and its scroll share one binding.
+    private var backlightPercent: Binding<Double> {
+        Binding(get: { model.backlightPercent },
+                set: { actions.setBacklight($0) })
+    }
+
     private var keyboardSection: some View {
         section {
             sliderRow(L("Keyboard backlight"), value: "\(Int(model.backlightPercent.rounded())) %") {
-                Slider(value: Binding(get: { model.backlightPercent },
-                                      set: { actions.setBacklight($0) }),
-                       in: 0...100)
+                Slider(value: backlightPercent, in: 0...100)
+                    .scrollWheelValue(backlightPercent, in: 0...100)
             }
             Toggle("Adjust in low light",
                    isOn: Binding(get: { model.backlightAuto },
@@ -221,30 +239,37 @@ struct PanelView: View {
 
     // MARK: - Footer
 
+    /// The footer is one row: the login toggle on the left, the quit button on
+    /// the right, so the panel ends on a single line. The long approval caption,
+    /// when it appears, hangs below that row instead of narrowing either
+    /// control; the button keeps its full label and the toggle truncates first.
     private var footer: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 8) {
                 Toggle("Launch at login",
                        isOn: Binding(get: { model.launchAtLogin },
                                      set: { actions.setLaunchAtLogin($0) }))
+                    .lineLimit(1)
+                    .truncationMode(.tail)
                     .disabled(!model.launchAtLoginAvailable)
 
-                if !model.launchAtLoginAvailable {
-                    Text("Unavailable from a build folder.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } else if model.launchAtLoginNeedsApproval {
-                    Text("Allow it in System Settings › General › Login Items.")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-            }
+                Spacer(minLength: 8)
 
-            HStack(spacing: 0) {
-                Spacer(minLength: 0)
                 Button("Quit Sandia") { actions.quit() }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
+                    .fixedSize()
+                    .layoutPriority(1)
+            }
+
+            if !model.launchAtLoginAvailable {
+                Text("Unavailable from a build folder.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else if model.launchAtLoginNeedsApproval {
+                Text("Allow it in System Settings › General › Login Items.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
         .padding(.horizontal, 14)
@@ -295,15 +320,22 @@ struct PanelView: View {
         .fixedSize()
     }
 
-    /// AppKit draws tick marks under a `Slider` that carries a `step`, and the
-    /// popover's vibrant background turns them into a white bar. Snapping the
-    /// value in the binding keeps the same granularity without the marks.
-    private func snappedSlider(_ binding: Binding<Double>,
-                               in range: ClosedRange<Double>,
-                               step: Double) -> some View {
-        Slider(value: Binding(get: { binding.wrappedValue },
-                              set: { binding.wrappedValue = ($0 / step).rounded() * step }),
-               in: range)
+    /// A temperature slider works in track position, not kelvin: the warm
+    /// 1000–6504 K range gets 85 % of the travel and the cold 6504–12000 K
+    /// range the remaining 15 % (`ColorTemperature.position(forKelvin:)`).
+    /// The value is snapped in kelvin, so preferences and the preview stay in
+    /// kelvin, and the slider carries no `step`: AppKit would draw tick marks
+    /// that the popover's vibrant background turns into a white bar.
+    /// The scroll wheel moves that same position, so it follows the same curve.
+    private func temperatureSlider(_ kelvin: Binding<Double>) -> some View {
+        let position = Binding(get: { ColorTemperature.position(forKelvin: kelvin.wrappedValue) },
+                               set: { kelvin.wrappedValue = snappedKelvin(ColorTemperature.kelvin(forPosition: $0)) })
+        return Slider(value: position, in: 0...1)
+            .scrollWheelValue(position)
+    }
+
+    private func snappedKelvin(_ kelvin: Double) -> Double {
+        (kelvin / 10).rounded() * 10
     }
 
     // MARK: - Derived text

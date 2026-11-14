@@ -47,6 +47,7 @@ final class MenuController: NSObject, NSPopoverDelegate {
 
     private func makeActions() -> PanelActions {
         PanelActions(
+            setDayKelvin: { [weak self] kelvin in self?.setDayKelvin(kelvin) },
             setNightKelvin: { [weak self] kelvin in self?.setNightKelvin(kelvin) },
             setDarkroom: { [weak self] on in self?.setDarkroom(on) },
             togglePause: { [weak self] in self?.togglePause() },
@@ -136,10 +137,19 @@ final class MenuController: NSObject, NSPopoverDelegate {
 
     // MARK: - Actions
 
+    private func setDayKelvin(_ raw: Double) {
+        setTemperature(raw, at: \.dayKelvin)
+    }
+
     private func setNightKelvin(_ raw: Double) {
+        setTemperature(raw, at: \.nightKelvin)
+    }
+
+    private func setTemperature(_ raw: Double,
+                                at keyPath: ReferenceWritableKeyPath<Preferences, Double>) {
         let kelvin = (raw / 10).rounded() * 10
         preferences.pausedUntil = nil // touching the slider means "show me", so end any pause
-        preferences.nightKelvin = kelvin
+        preferences[keyPath: keyPath] = kelvin
         engine.preview(kelvin: kelvin)
     }
 

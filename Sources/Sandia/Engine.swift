@@ -89,26 +89,35 @@ final class Engine {
 
     // MARK: - Tick
 
-    private func resolve(now: Date) -> ResolvedState {
+    private func resolve(now: Date) -> (state: ResolvedState, previewing: Bool) {
         var resolved = preferences.state(at: now).resolve(at: now)
         if let override = preferences.manualOverride {
             resolved = override.applied(to: resolved, at: now)
         }
+        var previewing = false
         if let previewKelvin, now < previewUntil, resolved.mode == .scheduled {
             resolved = ResolvedState(mode: .scheduled, rgb: ColorTemperature.rgb(kelvin: previewKelvin), kelvin: previewKelvin)
+            previewing = true
         }
-        return resolved
+        return (resolved, previewing)
     }
 
     private func tick() {
         guard !isShutDown else { return }
         let now = Date()
         purgeExpiredOverride(now: now)
-        let resolved = resolve(now: now)
+        let (resolved, previewing) = resolve(now: now)
         lastResolved = resolved
         let target = resolved.rgb
 
-        if current.maxDistance(to: target) < Self.snapThreshold {
+        if previewing {
+            // A slider move shows at once: no easing, so neighbouring values
+            // read as one continuous ramp instead of trailing the drag.
+            animationTimer?.invalidate()
+            animationTimer = nil
+            current = target
+            writeIfNeeded(now: now)
+        } else if current.maxDistance(to: target) < Self.snapThreshold {
             animationTimer?.invalidate()
             animationTimer = nil
             current = target
