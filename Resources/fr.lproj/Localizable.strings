@@ -27,3 +27,12 @@
 
 "Temperature curve over 24 hours" = "Courbe de température sur 24 heures";
 "Night from %@ to %@, %@. Day %@." = "Nuit de %@ à %@, %@. Jour %@.";
+
+/* Réglages avancés. */
+
+"Advanced settings" = "Réglages avancés";
+"Tint" = "Teinte";
+"Red" = "Rouge";
+"Amber" = "Ambre";
+"Reset" = "Réinitialiser";
+"The main slider still sets the intensity; at 0 % this has no effect." = "Le curseur principal règle toujours l'intensité ; à 0 %, aucun effet.";

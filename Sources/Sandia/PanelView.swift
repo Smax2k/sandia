@@ -44,6 +44,11 @@ struct PanelView: View {
             separator
             scheduleBlock
 
+            separator
+            AdvancedFilterView(tint: $preferences.filterTint)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 9)
+
             if model.backlightAvailable {
                 separator
                 keyboardSection
