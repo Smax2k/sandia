@@ -63,7 +63,7 @@ struct PanelView: View {
     // MARK: - Header
 
     /// One row only: the app name and its switch on the left, the applied
-    /// temperature with its small mode word on the right. The temperature keeps
+    /// reduction with its small mode word on the right. The percentage keeps
     /// its full width — it is the headline — so the mode word is the flexible
     /// part if a label ever needs the room. Both groups stay on a single line,
     /// so neither wraps.
@@ -84,7 +84,7 @@ struct PanelView: View {
             Spacer(minLength: 8)
 
             HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text(appliedTemperature)
+                Text(appliedReduction)
                     .font(.system(size: 24, weight: .semibold))
                     .monospacedDigit()
                     .lineLimit(1)
@@ -111,25 +111,25 @@ struct PanelView: View {
     // MARK: - Sections
 
     /// The schedule and the display controls share one compact block: each
-    /// boundary is a row pairing its temperature with the time it applies,
+    /// boundary is a row pairing its filter strength with the time it applies,
     /// then Darkroom, the fade and the pause sit on a single control strip.
     private var scheduleBlock: some View {
         VStack(alignment: .leading, spacing: 0) {
-            temperatureRow(title: L("Sunset"),
-                           label: L("Night temperature"),
-                           value: kelvinText(preferences.nightKelvin),
-                           time: \.nightStart) {
-                temperatureSlider(Binding(get: { preferences.nightKelvin },
-                                          set: { actions.setNightKelvin($0) }))
+            filterRow(title: L("Sunset"),
+                      label: L("Night filter"),
+                      value: reductionText(preferences.nightKelvin),
+                      time: \.nightStart) {
+                filterSlider(Binding(get: { preferences.nightKelvin },
+                                     set: { actions.setNightKelvin($0) }))
             }
 
             rowSeparator
-            temperatureRow(title: L("Sunrise"),
-                           label: L("Day temperature"),
-                           value: kelvinText(preferences.dayKelvin),
-                           time: \.nightEnd) {
-                temperatureSlider(Binding(get: { preferences.dayKelvin },
-                                          set: { actions.setDayKelvin($0) }))
+            filterRow(title: L("Sunrise"),
+                      label: L("Day filter"),
+                      value: reductionText(preferences.dayKelvin),
+                      time: \.nightEnd) {
+                filterSlider(Binding(get: { preferences.dayKelvin },
+                                     set: { actions.setDayKelvin($0) }))
             }
 
             rowSeparator
@@ -193,13 +193,13 @@ struct PanelView: View {
         Divider().padding(.vertical, 6)
     }
 
-    /// One schedule boundary: the temperature with its full-width slider, then
-    /// the clock time in a fixed-width column so both rows line up vertically.
-    private func temperatureRow<SliderContent: View>(title: String,
-                                                     label: String,
-                                                     value: String,
-                                                     time keyPath: ReferenceWritableKeyPath<Preferences, TimeOfDay>,
-                                                     @ViewBuilder slider: () -> SliderContent) -> some View {
+    /// One schedule boundary: the filter strength with its full-width slider,
+    /// then the clock time in a fixed-width column so both rows line up.
+    private func filterRow<SliderContent: View>(title: String,
+                                                label: String,
+                                                value: String,
+                                                time keyPath: ReferenceWritableKeyPath<Preferences, TimeOfDay>,
+                                                @ViewBuilder slider: () -> SliderContent) -> some View {
         HStack(alignment: .top, spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 8) {
@@ -325,29 +325,30 @@ struct PanelView: View {
         .fixedSize()
     }
 
-    /// A temperature slider works in track position, not kelvin: the warm
-    /// 1000–6504 K range gets 85 % of the travel and the cold 6504–12000 K
-    /// range the remaining 15 % (`ColorTemperature.position(forKelvin:)`).
-    /// The value is snapped in kelvin, so preferences and the preview stay in
-    /// kelvin, and the slider carries no `step`: AppKit would draw tick marks
-    /// that the popover's vibrant background turns into a white bar.
-    /// The scroll wheel moves that same position, so it follows the same curve.
-    private func temperatureSlider(_ kelvin: Binding<Double>) -> some View {
-        let position = Binding(get: { ColorTemperature.position(forKelvin: kelvin.wrappedValue) },
-                               set: { kelvin.wrappedValue = snappedKelvin(ColorTemperature.kelvin(forPosition: $0)) })
+    /// The filter slider runs from full reduction on the left to a neutral
+    /// screen on the right: `position = 1 - fraction`, with 0 % at 6,504 K and
+    /// 100 % at 1,000 K (`BlueLightReduction`). Kelvin stays the stored value,
+    /// so the schedule and the preview are unchanged. The slider carries no
+    /// `step`: AppKit would draw tick marks that the popover's vibrant
+    /// background turns into a white bar, and the wheel must keep moving
+    /// smoothly. The scroll wheel moves that same position, so it follows the
+    /// same curve.
+    private func filterSlider(_ kelvin: Binding<Double>) -> some View {
+        let position = Binding(
+            get: { 1 - BlueLightReduction.fraction(kelvin: kelvin.wrappedValue) },
+            set: { kelvin.wrappedValue = BlueLightReduction.kelvin(forFraction: 1 - $0) })
         return Slider(value: position, in: 0...1)
             .scrollWheelValue(position)
-    }
-
-    private func snappedKelvin(_ kelvin: Double) -> Double {
-        (kelvin / 10).rounded() * 10
+            .help(L("Blue light reduction"))
     }
 
     // MARK: - Derived text
 
-    private var appliedTemperature: String {
+    /// The headline and the rows speak reduction, never kelvin. A disabled or
+    /// paused state has no filter, so it shows a dash instead of a percentage.
+    private var appliedReduction: String {
         guard let kelvin = model.resolved.kelvin else { return "—" }
-        return kelvinText(kelvin)
+        return reductionText(kelvin)
     }
 
     private var modeLabel: String {
@@ -374,8 +375,8 @@ struct PanelView: View {
         return Int((until.timeIntervalSinceNow / 60).rounded(.up))
     }
 
-    private func kelvinText(_ kelvin: Double) -> String {
-        "\(Int(kelvin.rounded()).formatted()) K"
+    private func reductionText(_ kelvin: Double) -> String {
+        percentText(BlueLightReduction.fraction(kelvin: kelvin))
     }
 
     private func percentText(_ fraction: Double) -> String {

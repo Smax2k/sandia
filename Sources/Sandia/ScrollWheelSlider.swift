@@ -21,10 +21,9 @@ extension View {
 /// The shared behaviour behind `scrollWheelValue(_:in:)`.
 ///
 /// The travel is tracked as a 0...1 position rather than read back from the
-/// value each time: several values are quantised (a temperature is stored in
-/// steps of 10 K, the backlight in whole percent), and the leftover of a slow
-/// trackpad scroll is what lets the value cross that quantisation instead of
-/// stalling on it.
+/// value each time: the filter slider converts that position to kelvin, and the
+/// backlight is quantised to whole percent; the leftover of a slow trackpad
+/// scroll is what lets the value cross that quantisation instead of stalling.
 private struct ScrollWheelValueModifier: ViewModifier {
     @Binding var value: Double
     let range: ClosedRange<Double>

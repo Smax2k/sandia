@@ -70,22 +70,43 @@ final class Preferences: ObservableObject {
             return TimeOfDay(hour: clamped / 60, minute: clamped % 60)
         }
 
+        func kelvin(_ key: String, default value: Double) -> Double {
+            guard let stored = defaults.object(forKey: key) as? Double else { return value }
+            let migrated = Self.migratedKelvin(stored)
+            if migrated != stored { defaults.set(migrated, forKey: key) }
+            return migrated
+        }
+
         isEnabled = defaults.object(forKey: Key.enabled) as? Bool ?? true
         isDarkroom = defaults.object(forKey: Key.darkroom) as? Bool ?? false
         pausedUntil = defaults.object(forKey: Key.pausedUntil) as? Date
         nightStart = timeOfDay(Key.nightStart, default: fallback.nightStart)
         nightEnd = timeOfDay(Key.nightEnd, default: fallback.nightEnd)
         transitionMinutes = defaults.object(forKey: Key.transition) as? Int ?? fallback.transitionMinutes
-        dayKelvin = defaults.object(forKey: Key.dayKelvin) as? Double ?? fallback.dayKelvin
-        nightKelvin = defaults.object(forKey: Key.nightKelvin) as? Double ?? fallback.nightKelvin
+        dayKelvin = kelvin(Key.dayKelvin, default: fallback.dayKelvin)
+        nightKelvin = kelvin(Key.nightKelvin, default: fallback.nightKelvin)
         darkroomBrightness = defaults.object(forKey: Key.darkroomBrightness) as? Double ?? 0.7
         filterTint = FilterTint.clamped(defaults.object(forKey: Key.filterTint) as? Double
                                         ?? FilterTint.neutral)
         scheduleMode = (defaults.string(forKey: Key.scheduleMode)).flatMap(ScheduleMode.init(rawValue:)) ?? .fixed
         latitude = defaults.object(forKey: Key.latitude) as? Double
         longitude = defaults.object(forKey: Key.longitude) as? Double
-        manualKelvin = defaults.object(forKey: Key.manualKelvin) as? Double
+
+        if let stored = defaults.object(forKey: Key.manualKelvin) as? Double {
+            let migrated = Self.migratedKelvin(stored)
+            if migrated != stored { defaults.set(migrated, forKey: Key.manualKelvin) }
+            manualKelvin = migrated
+        } else {
+            manualKelvin = nil
+        }
         manualUntil = defaults.object(forKey: Key.manualUntil) as? Date
+    }
+
+    /// The filter now runs from 1,000 K to D65's 6,504 K. Older settings could
+    /// be cooler than neutral; they become the neutral end, while existing warm
+    /// values are kept as they are. The migration is written back on launch.
+    private static func migratedKelvin(_ value: Double) -> Double {
+        BlueLightReduction.clampedKelvin(value)
     }
 
     private func write(_ value: Double?, forKey key: String) {

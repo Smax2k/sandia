@@ -3,8 +3,9 @@
 "Enabled" = "Enabled";
 "Sunset" = "Sunset";
 "Sunrise" = "Sunrise";
-"Night temperature" = "Night temperature";
-"Day temperature" = "Day temperature";
+"Night filter" = "Night filter";
+"Day filter" = "Day filter";
+"Blue light reduction" = "Blue light reduction";
 "Darkroom intensity" = "Darkroom intensity";
 "Darkroom" = "Darkroom";
 "Fade" = "Fade";
@@ -25,8 +26,8 @@
 
 /* Curve accessibility. */
 
-"Temperature curve over 24 hours" = "Temperature curve over 24 hours";
-"Night from %@ to %@, %@. Day %@." = "Night from %@ to %@, %@. Day %@.";
+"Blue light reduction curve over 24 hours" = "Blue light reduction curve over 24 hours";
+"Night from %@ to %@, %@ reduction. Day %@ reduction." = "Night from %@ to %@, %@ reduction. Day %@ reduction.";
 
 /* Advanced filter. */
 

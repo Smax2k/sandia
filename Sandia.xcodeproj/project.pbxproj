@@ -37,9 +37,11 @@
 		AEA5EAA360E1B167B4A9A40F /* SandiaCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4E612C0236B94346DE78B7F1 /* SandiaCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B1663B1DE7DA5F8C07545D8A /* SandiaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E612C0236B94346DE78B7F1 /* SandiaCore.framework */; };
 		B87B59FCDF32CD54430DA063 /* SolarTimesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF3F9DE66541DC8C7AFCAE6 /* SolarTimesTests.swift */; };
+		BBF13BC68D55F522ADF1EFC9 /* BlueLightReduction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4EFAA2447D98FF69F658B9 /* BlueLightReduction.swift */; };
 		C32D16AD4C53A9FD66D8288A /* ColorTemperatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E222C20F7D9363235CFE80 /* ColorTemperatureTests.swift */; };
 		D1862336F551FEE27008DE10 /* SandiaStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C71C6F74E1CEC97FB13B19 /* SandiaStateTests.swift */; };
 		D51DD0D412EF49E4FBCFDFBA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE9F8322197EE3895C5F671 /* AppDelegate.swift */; };
+		DB82A520DE945791F963FF92 /* BlueLightReductionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAD31F578F61C78CC5E912F /* BlueLightReductionTests.swift */; };
 		EC0FDCE4580BED2F2AA05E9F /* ScrollAdjustment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A62D820636E4E184908239 /* ScrollAdjustment.swift */; };
 		F9B5588EB6A4AC1EEA923685 /* SolarSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711CEB62657931897EBFAB3E /* SolarSchedule.swift */; };
 		FC863687711057A37DE6D69D /* ScrollAdjustmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B423C67A19B45E593101B2AC /* ScrollAdjustmentTests.swift */; };
@@ -116,6 +118,7 @@
 		B3A897F9D052FDE32883FEBE /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		B423C67A19B45E593101B2AC /* ScrollAdjustmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAdjustmentTests.swift; sourceTree = "<group>"; };
 		B5D33F59C77DC22B900CB1E2 /* GammaReferencePolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GammaReferencePolicyTests.swift; sourceTree = "<group>"; };
+		BBAD31F578F61C78CC5E912F /* BlueLightReductionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueLightReductionTests.swift; sourceTree = "<group>"; };
 		BF75156C8BC82D9E9A914591 /* GammaReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GammaReference.swift; sourceTree = "<group>"; };
 		C9E222C20F7D9363235CFE80 /* ColorTemperatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTemperatureTests.swift; sourceTree = "<group>"; };
 		C9EB190D2ADEE8D8B9D9F9B8 /* ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
@@ -124,6 +127,7 @@
 		E377FB5854F096B97DF1CCC2 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		F17967863D1BB03CE036C3F2 /* SandiaState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandiaState.swift; sourceTree = "<group>"; };
 		FEC3E95F126199CB2870987E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FF4EFAA2447D98FF69F658B9 /* BlueLightReduction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueLightReduction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +172,7 @@
 		3DA9DD543B6E7AE43DCF5CAC /* SandiaCore */ = {
 			isa = PBXGroup;
 			children = (
+				FF4EFAA2447D98FF69F658B9 /* BlueLightReduction.swift */,
 				0AF61B9564E046B21D3C248D /* ColorTemperature.swift */,
 				496829B11D3D860AD3A213B5 /* FilterTint.swift */,
 				BF75156C8BC82D9E9A914591 /* GammaReference.swift */,
@@ -191,6 +196,7 @@
 		52B6FF5AE1CC5D0452340492 /* SandiaCoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				BBAD31F578F61C78CC5E912F /* BlueLightReductionTests.swift */,
 				C9E222C20F7D9363235CFE80 /* ColorTemperatureTests.swift */,
 				6BD83AB84858E120DDE6DF77 /* FilterTintTests.swift */,
 				B5D33F59C77DC22B900CB1E2 /* GammaReferencePolicyTests.swift */,
@@ -366,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB82A520DE945791F963FF92 /* BlueLightReductionTests.swift in Sources */,
 				C32D16AD4C53A9FD66D8288A /* ColorTemperatureTests.swift in Sources */,
 				915F858D4370CFA3AEA7A521 /* FilterTintTests.swift in Sources */,
 				5BD5498ECCD007B71DC19B94 /* GammaReferencePolicyTests.swift in Sources */,
@@ -402,6 +409,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBF13BC68D55F522ADF1EFC9 /* BlueLightReduction.swift in Sources */,
 				5AF8270A4644DFF9C078FB93 /* ColorTemperature.swift in Sources */,
 				AAA0DF97E5E8D46E285696BF /* FilterTint.swift in Sources */,
 				4269208527C6AFF4E00121A1 /* GammaReference.swift in Sources */,
