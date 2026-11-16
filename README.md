@@ -17,6 +17,7 @@ macOS 15 (Sequoia) or later. The app must live in `/Applications`: that is what 
 - A 24-hour blue-light reduction curve with a readable time marker.
 - Adjustable night and day blue-light reduction, from 0 % (a neutral screen, 6,504 K, D65) to 100 % (the warmest point, 1,000 K). The slider runs from full reduction on the left to neutral on the right.
 - The percentage is the strength of the software filter on the warm track, not a measurement of the blue light removed or of the light reaching your eyes.
+- **Advanced settings**, collapsed by default: a red–amber tint axis layered on the scheduled look, then the fade and keyboard rows. The tint only moves green, and the main slider still sets the intensity, so at 0 % it has no effect.
 - A gradual fade around sunset and sunrise.
 - A one-hour pause that leaves the curve untouched.
 - Mouse wheel and trackpad scroll adjust the slider under the pointer.

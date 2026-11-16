@@ -17,6 +17,7 @@ macOS 15 (Sequoia) ou plus récent. L'app vit dans `/Applications` : c'est de l�
 - Courbe de réduction du bleu sur 24 h, avec un repère d'heure lisible.
 - Réduction du bleu réglable de nuit et de jour, de 0 % (écran neutre, 6 504 K, D65) à 100 % (le point le plus chaud, 1 000 K). Le curseur va de la réduction maximale à gauche au neutre à droite.
 - Le pourcentage est la force du filtre logiciel sur la plage chaude, pas une mesure de la quantité de bleu retirée ni de la lumière qui atteint l'œil.
+- **Réglages avancés**, repliés par défaut : axe de teinte rouge–ambre posé sur le rendu programmé, puis les lignes du fondu et du clavier. La teinte n'agit que sur le vert, et le curseur principal règle toujours l'intensité : à 0 %, elle n'a aucun effet.
 - Fondu progressif autour du coucher et du lever.
 - Pause d'une heure, sans perdre la courbe.
 - Molette et défilement à deux doigts sur le curseur sous le pointeur.
