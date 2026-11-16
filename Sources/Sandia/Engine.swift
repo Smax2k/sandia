@@ -35,9 +35,20 @@ final class Engine {
     init(preferences: Preferences) {
         self.preferences = preferences
         lastResolved = preferences.state.resolve(at: Date())
+        GammaDiagnostics.log("engine.init", [
+            ("enabled", preferences.isEnabled ? "1" : "0"),
+            ("darkroom", preferences.isDarkroom ? "1" : "0"),
+            ("dayK", String(format: "%.0f", preferences.dayKelvin)),
+            ("nightK", String(format: "%.0f", preferences.nightKelvin)),
+            ("schedule", "\(preferences.scheduleMode)"),
+            ("paused", preferences.pausedUntil == nil ? "no" : "yes"),
+            ("mode", "\(lastResolved.mode)"),
+            ("rgb", GammaDiagnostics.rgb(lastResolved.rgb))
+        ])
     }
 
     func start() {
+        GammaDiagnostics.log("engine.start", [("mode", "\(lastResolved.mode)")])
         let timer = Timer(timeInterval: 1, repeats: true) { [weak self] _ in self?.tick() }
         RunLoop.main.add(timer, forMode: .common) // keeps ticking while a menu is open
         tickTimer = timer
@@ -165,6 +176,13 @@ final class Engine {
         // The 5 s safety re-apply only matters while a tint is active.
         let stale = !neutral && now.timeIntervalSince(lastWrite) >= Self.safetyInterval
         guard changed || stale else { return }
+        GammaDiagnostics.log("tick.write", [
+            ("path", neutral ? "restore" : "apply"),
+            ("reason", changed ? "changed" : "stale"),
+            ("rgb", GammaDiagnostics.rgb(current)),
+            ("mode", "\(lastResolved.mode)"),
+            ("kelvin", lastResolved.kelvin.map { String(format: "%.0f", $0) } ?? "none")
+        ])
         if neutral {
             gamma.restore()
         } else {
