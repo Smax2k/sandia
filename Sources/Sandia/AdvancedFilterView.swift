@@ -1,14 +1,31 @@
 import SwiftUI
 import SandiaCore
 
-/// The advanced filter: one red–amber axis layered on the scheduled tint.
+/// The advanced settings: the red–amber tint axis layered on the scheduled
+/// tint, then the rows the panel hands over — the fade and the keyboard
+/// backlight.
 ///
-/// It starts collapsed so the panel keeps its everyday controls, and it adds
-/// nothing beyond the tint itself and a way back to its default. The main
-/// slider still sets the intensity; at 0 % the tint has no effect.
-struct AdvancedFilterView: View {
+/// It starts collapsed so the panel keeps its everyday controls. The tint adds
+/// nothing beyond itself and a way back to its default: the main slider still
+/// sets the intensity, so at 0 % the tint has no effect.
+struct AdvancedFilterView<Extra: View>: View {
     @Binding var tint: Double
-    @State private var isExpanded = false
+    private let extra: () -> Extra
+    @State private var isExpanded: Bool
+
+    /// - Parameters:
+    ///   - initiallyExpanded: whether the group starts open. Only the
+    ///     off-screen screenshot harness passes `true`; the panel keeps the
+    ///     collapsed default.
+    ///   - extra: the rows below the tint, built by the panel so they keep
+    ///     their own bindings and actions.
+    init(tint: Binding<Double>,
+         initiallyExpanded: Bool = false,
+         @ViewBuilder extra: @escaping () -> Extra) {
+        _tint = tint
+        _isExpanded = State(initialValue: initiallyExpanded)
+        self.extra = extra
+    }
 
     var body: some View {
         DisclosureGroup(isExpanded: $isExpanded) {
@@ -41,6 +58,8 @@ struct AdvancedFilterView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+
+                extra()
             }
             .padding(.top, 8)
         } label: {

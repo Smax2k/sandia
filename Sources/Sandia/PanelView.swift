@@ -36,6 +36,20 @@ struct PanelView: View {
     let actions: PanelActions
 
     private let panelWidth: CGFloat = 320
+    private let advancedExpandedInitially: Bool
+
+    /// - Parameter advancedExpandedInitially: whether the advanced group
+    ///   starts open. Only the off-screen screenshot harness passes `true`; the
+    ///   panel keeps it collapsed by default.
+    init(preferences: Preferences,
+         model: PanelModel,
+         actions: PanelActions,
+         advancedExpandedInitially: Bool = false) {
+        _preferences = ObservedObject(wrappedValue: preferences)
+        _model = ObservedObject(wrappedValue: model)
+        self.actions = actions
+        self.advancedExpandedInitially = advancedExpandedInitially
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -45,14 +59,12 @@ struct PanelView: View {
             scheduleBlock
 
             separator
-            AdvancedFilterView(tint: $preferences.filterTint)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 9)
-
-            if model.backlightAvailable {
-                separator
-                keyboardSection
+            AdvancedFilterView(tint: $preferences.filterTint,
+                               initiallyExpanded: advancedExpandedInitially) {
+                advancedExtras
             }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 9)
 
             separator
             footer
@@ -112,7 +124,8 @@ struct PanelView: View {
 
     /// The schedule and the display controls share one compact block: each
     /// boundary is a row pairing its filter strength with the time it applies,
-    /// then Darkroom, the fade and the pause sit on a single control strip.
+    /// then Darkroom and the pause sit on a single control strip. The fade now
+    /// lives in the advanced group with the tint and the keyboard backlight.
     private var scheduleBlock: some View {
         VStack(alignment: .leading, spacing: 0) {
             filterRow(title: L("Sunset"),
@@ -153,8 +166,10 @@ struct PanelView: View {
         .padding(.vertical, 9)
     }
 
-    /// The control strip keeps three comparable zones and the same spacing:
-    /// Darkroom first, then the fade, and the pause at the trailing edge.
+    /// The control strip pairs Darkroom on the leading edge with the pause at
+    /// the trailing edge. Its labels keep their intrinsic width, so the two
+    /// controls stay aligned without a middle column now that the fade has
+    /// moved into the advanced group.
     private var controlStrip: some View {
         HStack(alignment: .top, spacing: 8) {
             labelledColumn(L("Darkroom")) {
@@ -164,18 +179,8 @@ struct PanelView: View {
                     .toggleStyle(.switch)
                     .controlSize(.small)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
 
-            labelledColumn(L("Fade")) {
-                HStack(spacing: 2) {
-                    Text("\(preferences.transitionMinutes) min")
-                        .monospacedDigit()
-                        .foregroundStyle(.secondary)
-                    Stepper("", value: $preferences.transitionMinutes, in: 0...180, step: 5)
-                        .labelsHidden()
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
+            Spacer(minLength: 8)
 
             labelledColumn(L("Pause")) {
                 Button(isPaused ? L("Resume") : L("Pause 1 h")) { actions.togglePause() }
@@ -183,7 +188,6 @@ struct PanelView: View {
                     .controlSize(.small)
                     .disabled(!preferences.isEnabled)
             }
-            .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
 
@@ -230,12 +234,32 @@ struct PanelView: View {
                 set: { actions.setBacklight($0) })
     }
 
-    private var keyboardSection: some View {
-        section {
-            sliderRow(L("Keyboard backlight"), value: "\(Int(model.backlightPercent.rounded())) %") {
+    /// The rows below the tint in the advanced group: the fade, then the
+    /// keyboard backlight when macOS exposes it. They reuse the panel's
+    /// helpers and keep the bindings and actions they had on the main panel.
+    @ViewBuilder
+    private var advancedExtras: some View {
+        Divider()
+
+        HStack(spacing: 8) {
+            Text("Fade")
+            Spacer(minLength: 8)
+            Text("\(preferences.transitionMinutes) min")
+                .monospacedDigit()
+                .foregroundStyle(.secondary)
+            Stepper("", value: $preferences.transitionMinutes, in: 0...180, step: 5)
+                .labelsHidden()
+        }
+
+        if model.backlightAvailable {
+            Divider()
+
+            sliderRow(L("Keyboard backlight"),
+                      value: "\(Int(model.backlightPercent.rounded())) %") {
                 Slider(value: backlightPercent, in: 0...100)
                     .scrollWheelValue(backlightPercent, in: 0...100)
             }
+
             Toggle("Adjust in low light",
                    isOn: Binding(get: { model.backlightAuto },
                                  set: { _ in actions.toggleBacklightAuto() }))
@@ -285,14 +309,6 @@ struct PanelView: View {
 
     private var separator: some View {
         Divider()
-    }
-
-    private func section<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            content()
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 9)
     }
 
     private func sliderRow<Content: View>(_ title: String,

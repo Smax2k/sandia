@@ -10,11 +10,15 @@
 //       Sources/SandiaCore/*.swift \
 //       Sources/Sandia/Preferences.swift \
 //       Sources/Sandia/PanelView.swift \
+//       Sources/Sandia/AdvancedFilterView.swift \
 //       Sources/Sandia/ScrollWheelSlider.swift \
 //       Sources/Sandia/CurveView.swift \
 //       Sources/Sandia/Localization.swift \
 //       scripts/screenshot.swift -o .build/screenshot
 //   .build/screenshot docs/screenshot.png
+//
+// `--expanded` opens the advanced group and `--no-backlight` hides the
+// keyboard rows, so both states can be checked off-screen.
 
 import AppKit
 import SwiftUI
@@ -24,7 +28,29 @@ import SandiaCore
 struct Screenshot {
     @MainActor
     static func main() throws {
-        let output = CommandLine.arguments.dropFirst().first ?? "docs/screenshot.png"
+        var output = "docs/screenshot.png"
+        var expanded = false
+        var backlight = true
+        var outputIsSet = false
+
+        var arguments = CommandLine.arguments.dropFirst()
+        while let argument = arguments.popFirst() {
+            switch argument {
+            case "--expanded":
+                expanded = true
+            case "--no-backlight":
+                backlight = false
+            case _ where argument.hasPrefix("-"):
+                // Foundation options such as `-AppleLocale en_US` come in
+                // pairs: skip their value too.
+                _ = arguments.popFirst()
+            default:
+                if !outputIsSet {
+                    output = argument
+                    outputIsSet = true
+                }
+            }
+        }
 
         let app = NSApplication.shared
         app.setActivationPolicy(.accessory)
@@ -48,7 +74,7 @@ struct Screenshot {
 
         let now = Date()
         let model = PanelModel(resolved: preferences.state.resolve(at: now))
-        model.backlightAvailable = true
+        model.backlightAvailable = backlight
         model.backlightPercent = 38
         model.backlightAuto = true
         model.launchAtLogin = true
@@ -65,7 +91,10 @@ struct Screenshot {
             quit: {}
         )
 
-        let panel = PanelView(preferences: preferences, model: model, actions: actions)
+        let panel = PanelView(preferences: preferences,
+                              model: model,
+                              actions: actions,
+                              advancedExpandedInitially: expanded)
         let hosting = NSHostingView(rootView: panel)
         hosting.layoutSubtreeIfNeeded()
         let panelSize = hosting.fittingSize

@@ -40,7 +40,7 @@ xcodegen generate
 xcodebuild -project Sandia.xcodeproj -scheme Sandia -configuration Release build
 ```
 
-Tests (91):
+Tests (113):
 
 ```sh
 swift test
