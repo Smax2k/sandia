@@ -3,7 +3,7 @@ import Foundation
 import SwiftUI
 import SandiaCore
 
-/// The 24-hour target-temperature curve for the current schedule.
+/// The 24-hour target blue-light-reduction curve for the current schedule.
 ///
 /// The height is owned here and never derived from the drawing: a schedule
 /// edit only redraws the canvas, so the popover keeps its size.
@@ -19,7 +19,7 @@ struct CurveView: View {
         }
         .frame(height: Self.height)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(L("Temperature curve over 24 hours"))
+        .accessibilityLabel(L("Blue light reduction curve over 24 hours"))
         .accessibilityValue(accessibilityValue)
     }
 
@@ -36,18 +36,20 @@ struct CurveView: View {
         // not drift with today's DST transition.
         let baseDate = calendar.date(from: DateComponents(year: 2001, month: 6, day: 15)) ?? Date()
 
-        let dayKelvin = schedule.dayKelvin
-        let nightKelvin = schedule.nightKelvin
-        let spread = max(abs(dayKelvin - nightKelvin), 400)
-        let scaleLow = min(dayKelvin, nightKelvin) - spread * 0.15
-        let scaleHigh = max(dayKelvin, nightKelvin) + spread * 0.15
+        let dayReduction = BlueLightReduction.fraction(kelvin: schedule.dayKelvin)
+        let nightReduction = BlueLightReduction.fraction(kelvin: schedule.nightKelvin)
+        // At least 5 points of span keeps a flat curve readable; the padding
+        // keeps labels inside the plot while the scale stays in percent.
+        let spread = max(abs(dayReduction - nightReduction), 0.05)
+        let scaleLow = max(min(dayReduction, nightReduction) - spread * 0.15, 0)
+        let scaleHigh = min(max(dayReduction, nightReduction) + spread * 0.15, 1)
 
         func x(_ minute: Double) -> CGFloat {
             CGFloat(min(max(minute, 0), 1440) / 1440) * width
         }
 
-        func y(_ kelvin: Double) -> CGFloat {
-            let progress = (kelvin - scaleLow) / (scaleHigh - scaleLow)
+        func y(_ reduction: Double) -> CGFloat {
+            let progress = (reduction - scaleLow) / (scaleHigh - scaleLow)
             return bottom - CGFloat(progress) * plotHeight
         }
 
@@ -59,7 +61,7 @@ struct CurveView: View {
 
         // Day and night reference levels.
         var levels = Path()
-        for level in [dayKelvin, nightKelvin] {
+        for level in [dayReduction, nightReduction] {
             let levelY = y(level)
             levels.move(to: CGPoint(x: 0, y: levelY))
             levels.addLine(to: CGPoint(x: width, y: levelY))
@@ -69,13 +71,14 @@ struct CurveView: View {
                        style: StrokeStyle(lineWidth: 0.75, dash: [2, 3]))
 
         // Sampled curve, kept so the annotations can sit on the real plateaus.
-        var samples: [(minute: Double, kelvin: Double)] = []
+        var samples: [(minute: Double, kelvin: Double, reduction: Double)] = []
         var curve = Path()
         var minute: Double = 0
         while minute <= 1440 {
             let value = kelvin(at: minute)
-            samples.append((minute, value))
-            let point = CGPoint(x: x(minute), y: y(value))
+            let reduction = BlueLightReduction.fraction(kelvin: value)
+            samples.append((minute, value, reduction))
+            let point = CGPoint(x: x(minute), y: y(reduction))
             if minute == 0 {
                 curve.move(to: point)
             } else {
@@ -152,8 +155,9 @@ struct CurveView: View {
         let halo: CGFloat = 2.5
         let inset = radius + halo
         let markerX = min(max(x(minute), inset), max(width - inset, inset))
-        let markerY = min(max(y(schedule.targetKelvin(at: now, calendar: calendar)),
-                              top + inset), bottom - inset)
+        let reduction = BlueLightReduction.fraction(
+            kelvin: schedule.targetKelvin(at: now, calendar: calendar))
+        let markerY = min(max(y(reduction), top + inset), bottom - inset)
 
         var marker = Path()
         marker.move(to: CGPoint(x: markerX, y: top))
@@ -177,7 +181,7 @@ struct CurveView: View {
     }
 
     /// The time sits beside the dot, on the side that stays inside the plot and
-    /// clear of the temperature labels.
+    /// clear of the reduction labels.
     private func drawNowLabel(in context: inout GraphicsContext,
                               text: String,
                               dot: CGPoint,
@@ -193,7 +197,7 @@ struct CurveView: View {
         let gap = radius + 2
         let plot = CGRect(x: 0, y: top, width: width, height: bottom - top)
 
-        // Temperature labels sit above their plateau line, so the space under
+        // Reduction labels sit above their plateau line, so the space under
         // the dot is the safest place for the time; sides and top are fallbacks
         // for a marker close to the bottom of the plot.
         let below = gap + chipSize.height / 2
@@ -241,7 +245,7 @@ struct CurveView: View {
     }
 
     private func drawAnnotations(in context: inout GraphicsContext,
-                                 samples: [(minute: Double, kelvin: Double)],
+                                 samples: [(minute: Double, kelvin: Double, reduction: Double)],
                                  width: CGFloat,
                                  top: CGFloat,
                                  bottom: CGFloat,
@@ -269,11 +273,13 @@ struct CurveView: View {
 
         let dayKelvin = schedule.dayKelvin
         let nightKelvin = schedule.nightKelvin
+        let dayReduction = BlueLightReduction.fraction(kelvin: dayKelvin)
+        let nightReduction = BlueLightReduction.fraction(kelvin: nightKelvin)
 
         guard abs(dayKelvin - nightKelvin) >= 1 else {
             let center = plateauCenter(in: samples, level: dayKelvin) ?? 720
-            place(kelvinLabel(dayKelvin),
-                  at: CGPoint(x: x(center), y: y(dayKelvin)),
+            place(reductionLabel(dayKelvin),
+                  at: CGPoint(x: x(center), y: y(dayReduction)),
                   preferAbove: true)
             return drawn
         }
@@ -283,17 +289,17 @@ struct CurveView: View {
         // the space below, which keeps both inside the plot.
         let dayCenter = plateauCenter(in: samples, level: dayKelvin) ?? 720
         let nightCenter = plateauCenter(in: samples, level: nightKelvin) ?? 120
-        place(kelvinLabel(dayKelvin),
-              at: CGPoint(x: x(dayCenter), y: y(dayKelvin)),
+        place(reductionLabel(dayKelvin),
+              at: CGPoint(x: x(dayCenter), y: y(dayReduction)),
               preferAbove: true)
-        place(kelvinLabel(nightKelvin),
-              at: CGPoint(x: x(nightCenter), y: y(nightKelvin)),
+        place(reductionLabel(nightKelvin),
+              at: CGPoint(x: x(nightCenter), y: y(nightReduction)),
               preferAbove: false)
         return drawn
     }
 
     /// Middle minute of the longest run of samples resting on `level`.
-    private func plateauCenter(in samples: [(minute: Double, kelvin: Double)],
+    private func plateauCenter(in samples: [(minute: Double, kelvin: Double, reduction: Double)],
                                level: Double) -> Double? {
         var bestStart: Double?
         var bestEnd: Double?
@@ -346,15 +352,17 @@ struct CurveView: View {
 
     // MARK: - Text
 
-    private func kelvinLabel(_ kelvin: Double) -> String {
-        "\(Int(kelvin.rounded()).formatted()) K"
+    private func reductionLabel(_ kelvin: Double) -> String {
+        let percent = BlueLightReduction.fraction(kelvin: kelvin) * 100
+        return "\(Int(percent.rounded()).formatted()) %"
     }
 
     private var accessibilityValue: String {
-        let night = "\(kelvinLabel(schedule.nightKelvin))"
-        let day = "\(kelvinLabel(schedule.dayKelvin))"
+        let night = reductionLabel(schedule.nightKelvin)
+        let day = reductionLabel(schedule.dayKelvin)
         let start = String(format: "%02d:%02d", schedule.nightStart.hour, schedule.nightStart.minute)
         let end = String(format: "%02d:%02d", schedule.nightEnd.hour, schedule.nightEnd.minute)
-        return L("Night from %@ to %@, %@. Day %@.", start, end, night, day)
+        return L("Night from %@ to %@, %@ reduction. Day %@ reduction.",
+                 start, end, night, day)
     }
 }

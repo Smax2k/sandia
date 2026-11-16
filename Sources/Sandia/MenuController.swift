@@ -147,7 +147,10 @@ final class MenuController: NSObject, NSPopoverDelegate {
 
     private func setTemperature(_ raw: Double,
                                 at keyPath: ReferenceWritableKeyPath<Preferences, Double>) {
-        let kelvin = (raw / 10).rounded() * 10
+        guard raw.isFinite else { return }
+        // Kelvin stays the stored unit, unrounded: 6,504 K must survive as the
+        // exact neutral end instead of being snapped to 6,500 K.
+        let kelvin = BlueLightReduction.clampedKelvin(raw)
         preferences.pausedUntil = nil // touching the slider means "show me", so end any pause
         preferences[keyPath: keyPath] = kelvin
         engine.preview(kelvin: kelvin)

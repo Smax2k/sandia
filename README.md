@@ -4,7 +4,7 @@
 
 A tiny macOS menu bar app that warms the screen in the evening by rewriting the display gamma tables, like f.lux. It replaces f.lux on our Macs.
 
-<img src="docs/screenshot.png" width="392" alt="Sandia panel: 2,300 K, a 24-hour curve, night and day temperatures">
+<img src="docs/screenshot.png" width="392" alt="Sandia panel: the 24-hour curve, night and day filter settings">
 
 ## Install
 
@@ -14,8 +14,9 @@ macOS 15 (Sequoia) or later. The app must live in `/Applications`: that is what 
 
 ## Features
 
-- A 24-hour temperature curve with a readable time marker.
-- Adjustable night and day temperatures, from 1,000 K to 12,000 K, neutral at 6,504 K (D65).
+- A 24-hour blue-light reduction curve with a readable time marker.
+- Adjustable night and day blue-light reduction, from 0 % (a neutral screen, 6,504 K, D65) to 100 % (the warmest point, 1,000 K). The slider runs from full reduction on the left to neutral on the right.
+- The percentage is the strength of the software filter on the warm track, not a measurement of the blue light removed or of the light reaching your eyes.
 - A gradual fade around sunset and sunrise.
 - A one-hour pause that leaves the curve untouched.
 - Mouse wheel and trackpad scroll adjust the slider under the pointer.
@@ -39,7 +40,7 @@ xcodegen generate
 xcodebuild -project Sandia.xcodeproj -scheme Sandia -configuration Release build
 ```
 
-Tests (78):
+Tests (91):
 
 ```sh
 swift test
@@ -63,6 +64,7 @@ swift build -c debug
 BIN=$(swift build -c debug --show-bin-path)
 swiftc -swift-version 5 -I "$BIN" \
     Sources/Sandia/Preferences.swift Sources/Sandia/PanelView.swift \
+    Sources/Sandia/AdvancedFilterView.swift \
     Sources/Sandia/ScrollWheelSlider.swift \
     Sources/Sandia/CurveView.swift Sources/Sandia/Localization.swift \
     scripts/screenshot.swift "$BIN/SandiaCore.o" -o .build/screenshot
