@@ -25,3 +25,11 @@ Seulement sur demande explicite de Jonathan :
 - Hors remplacement dans `/Applications`, ne pas lancer l'app pour des essais automatisés : elle modifie le gamma de l'écran de Jonathan.
 - Tests automatisés toujours en headless.
 - Aucun secret manipulé : la notarisation passe par le profil `asc` déjà présent.
+
+## Gamma : référence et diagnostic
+
+- Une teinte s'écrit `original × facteur` : ne jamais remplacer une référence par une table identité, ni changer la formule ou le plafond sans preuve in-process (relecture du LUT réellement écrit).
+- Une référence capturée peut être suspecte si une teinte résiduelle est encore installée : ne jamais adopter comme référence une table identique à celle que le processus vient d'écrire. Les teintes laissées par un autre processus ne sont pas détectées ; ne pas prétendre le contraire.
+- Un échec de `CGSetDisplayTransferByTable` n'est pas récupéré immédiatement : `Engine` retient la valeur visée et ne réessaie qu'au safety de 5 s, et seulement tant qu'une teinte est active. Les logs signalent l'échec ; aucune reprise n'est garantie hors teinte.
+- Sur le MacBook Air, arrêter l'ancien process puis remplacer et relancer l'app a rétabli un rendu correct, confirmé par Jonathan ; cela ne prouve pas le mécanisme d'origine.
+- Diagnostic optionnel `SANDIA_GAMMA_DIAG=1`, journal dans le dossier temporaire de l'utilisateur ; temporaire, à désactiver après mesures.

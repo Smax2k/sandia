@@ -1,38 +1,45 @@
+import ColorSync
 import CoreGraphics
 import Foundation
 import SandiaCore
 
-/// Writes per-display gamma tables: `original * factor`, per channel.
-/// Original tables are captured once per display so repeated applies never compound.
+/// Writes per-display gamma tables: `reference * factor`, per channel.
+///
+/// References are captured once per display, keyed by the display's stable
+/// UUID, and never from a table this process installed itself: reconfiguring
+/// or re-enabling a display must not fold the current tint into the next
+/// reference. The decision itself lives in `GammaReferencePolicy`, which is
+/// pure and tested without a screen.
 final class GammaController {
-    private struct Tables {
-        var red: [CGGammaValue]
-        var green: [CGGammaValue]
-        var blue: [CGGammaValue]
+    private struct Target {
+        var id: CGDirectDisplayID
+        /// Stable across re-enumeration, unlike the numeric display id.
+        var key: String
     }
 
     private static let capacity: UInt32 = 256
-    private var originals: [CGDirectDisplayID: Tables] = [:]
+
+    private var policy = GammaReferencePolicy()
     /// Tables Sandia itself has written, so a delayed probe can be read apart
     /// from a restore macOS performed on its own.
     private var writeCount = 0
 
     init() {
         GammaDiagnostics.session(capacity: Self.capacity)
-        let displays = activeDisplays()
-        GammaDiagnostics.log("gamma.init", [("displays", GammaDiagnostics.ids(displays))])
-        probe(displays, phase: "before-restore")
+        let targets = targets()
+        GammaDiagnostics.log("gamma.init", [("displays", GammaDiagnostics.ids(targets.map(\.id)))])
+        probe(targets.map(\.id), phase: "before-restore")
         // A previous crashed run may have left a tint behind; never capture that as "original".
         CGDisplayRestoreColorSyncSettings()
-        probe(displays, phase: "after-restore")
-        refresh(displays)
+        probe(targets.map(\.id), phase: "after-restore")
+        refresh(targets)
         if GammaDiagnostics.isEnabled {
             // Passive re-reads: shows whether a restore lands late, and what is
             // on the display once the opening ease (2 s) is over.
             for delay in [1.0, 5.0] {
                 DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
                     guard let self else { return }
-                    self.probe(self.activeDisplays(), phase: String(format: "t+%.0fs", delay))
+                    self.probe(self.targets().map(\.id), phase: String(format: "t+%.0fs", delay))
                 }
             }
         }
@@ -46,30 +53,66 @@ final class GammaController {
         return Array(ids.prefix(Int(count)))
     }
 
-    /// Captures originals for displays seen for the first time and forgets unplugged ones.
-    func refreshDisplays() {
-        refresh(activeDisplays())
+    /// Active displays with a key that survives re-enumeration, so a display
+    /// that is reconfigured or re-enabled finds its known reference again.
+    private func targets() -> [Target] {
+        activeDisplays().map { id in
+            let uuid = CGDisplayCreateUUIDFromDisplayID(id)?.takeRetainedValue()
+            let key: String
+            if let uuid, let string = CFUUIDCreateString(nil, uuid) {
+                key = string as String
+            } else {
+                key = "id:\(id)"
+            }
+            return Target(id: id, key: key)
+        }
     }
 
-    private func refresh(_ active: [CGDirectDisplayID]) {
-        originals = originals.filter { active.contains($0.key) }
-        for id in active where originals[id] == nil {
-            guard let (tables, samples) = readTable(id) else {
-                GammaDiagnostics.log("baseline.captured", [("display", "\(id)"), ("result", "read-failed")])
+    /// Captures references for displays that do not have one yet.
+    func refreshDisplays() {
+        refresh(targets())
+    }
+
+    private func refresh(_ targets: [Target]) {
+        for target in targets {
+            guard policy.reference(for: target.key) == nil else {
+                GammaDiagnostics.log("baseline.reused", [("display", "\(target.id)")])
                 continue
             }
-            originals[id] = tables
+            captureReference(target, phase: "refresh")
+        }
+    }
+
+    /// Reads a reference unless the table is the tint this process installed.
+    @discardableResult
+    private func captureReference(_ target: Target, phase: String) -> Bool {
+        guard let (tables, samples) = readTable(target.id) else {
             GammaDiagnostics.log("baseline.captured", [
-                ("display", "\(id)"),
+                ("display", "\(target.id)"), ("phase", phase), ("result", "read-failed")
+            ])
+            return false
+        }
+        switch policy.reference(for: target.key, read: tables) {
+        case .rejectedOwnTint:
+            // Our own tint is still installed: it cannot become the baseline.
+            GammaDiagnostics.log("baseline.rejected", [
+                ("display", "\(target.id)"), ("phase", phase), ("reason", "own-tint")
+            ])
+            return false
+        case .known, .adopted:
+            GammaDiagnostics.log("baseline.captured", [
+                ("display", "\(target.id)"),
+                ("phase", phase),
                 ("samples", "\(samples)"),
                 ("r", GammaDiagnostics.endpoints(tables.red)),
                 ("g", GammaDiagnostics.endpoints(tables.green)),
                 ("b", GammaDiagnostics.endpoints(tables.blue))
             ])
+            return true
         }
     }
 
-    private func readTable(_ display: CGDirectDisplayID) -> (tables: Tables, samples: UInt32)? {
+    private func readTable(_ display: CGDirectDisplayID) -> (tables: GammaTable, samples: UInt32)? {
         var red = [CGGammaValue](repeating: 0, count: Int(Self.capacity))
         var green = red
         var blue = red
@@ -77,11 +120,13 @@ final class GammaController {
         guard CGGetDisplayTransferByTable(display, Self.capacity, &red, &green, &blue, &samples) == .success,
               samples > 0 else { return nil }
         let n = Int(samples)
-        return (Tables(red: Array(red.prefix(n)), green: Array(green.prefix(n)), blue: Array(blue.prefix(n))), samples)
+        return (GammaTable(red: Array(red.prefix(n)),
+                           green: Array(green.prefix(n)),
+                           blue: Array(blue.prefix(n))), samples)
     }
 
     /// Reads what the display currently holds. Diagnostic only: never writes,
-    /// never touches the captured originals.
+    /// never touches the captured references.
     private func probe(_ displays: [CGDirectDisplayID], phase: String) {
         guard GammaDiagnostics.isEnabled else { return }
         for id in displays {
@@ -103,52 +148,45 @@ final class GammaController {
 
     func apply(_ rgb: RGB) {
         let factors = (red: Float(rgb.red), green: Float(rgb.green), blue: Float(rgb.blue))
-        let displays = activeDisplays()
+        let targets = targets()
         writeCount += 1
         GammaDiagnostics.log("apply.intent", [
             ("rgb", GammaDiagnostics.rgb(rgb)),
-            ("displays", GammaDiagnostics.ids(displays))
+            ("displays", GammaDiagnostics.ids(targets.map(\.id)))
         ])
-        for id in displays {
-            if originals[id] == nil, let captured = readTable(id) {
-                originals[id] = captured.tables
-                GammaDiagnostics.log("baseline.captured", [
-                    ("display", "\(id)"),
-                    ("phase", "apply-late"),
-                    ("samples", "\(captured.samples)"),
-                    ("r", GammaDiagnostics.endpoints(captured.tables.red)),
-                    ("g", GammaDiagnostics.endpoints(captured.tables.green)),
-                    ("b", GammaDiagnostics.endpoints(captured.tables.blue))
-                ])
-            }
-            guard let original = originals[id] else {
-                GammaDiagnostics.log("apply.skip", [("display", "\(id)"), ("reason", "no-baseline")])
+        for target in targets {
+            if policy.reference(for: target.key) == nil, !captureReference(target, phase: "apply") {
+                GammaDiagnostics.log("apply.skip", [("display", "\(target.id)"), ("reason", "no-reference")])
                 continue
             }
-            var red = original.red.map { $0 * factors.red }
-            var green = original.green.map { $0 * factors.green }
-            var blue = original.blue.map { $0 * factors.blue }
+            guard let reference = policy.reference(for: target.key) else { continue }
+            var red = reference.red.map { $0 * factors.red }
+            var green = reference.green.map { $0 * factors.green }
+            var blue = reference.blue.map { $0 * factors.blue }
             if GammaDiagnostics.isEnabled {
                 GammaDiagnostics.log("apply.lut", [
-                    ("display", "\(id)"),
+                    ("display", "\(target.id)"),
                     ("n", "\(red.count)"),
-                    ("original.r", GammaDiagnostics.endpoints(original.red)),
-                    ("original.g", GammaDiagnostics.endpoints(original.green)),
-                    ("original.b", GammaDiagnostics.endpoints(original.blue)),
+                    ("original.r", GammaDiagnostics.endpoints(reference.red)),
+                    ("original.g", GammaDiagnostics.endpoints(reference.green)),
+                    ("original.b", GammaDiagnostics.endpoints(reference.blue)),
                     ("written.r", GammaDiagnostics.endpoints(red)),
                     ("written.g", GammaDiagnostics.endpoints(green)),
                     ("written.b", GammaDiagnostics.endpoints(blue))
                 ])
             }
-            let result = CGSetDisplayTransferByTable(id, UInt32(red.count), &red, &green, &blue)
+            let result = CGSetDisplayTransferByTable(target.id, UInt32(red.count), &red, &green, &blue)
+            let succeeded = result == .success
+            policy.recordWrite(GammaTable(red: red, green: green, blue: blue),
+                               for: target.key, succeeded: succeeded)
             GammaDiagnostics.log("apply.result", [
-                ("display", "\(id)"),
+                ("display", "\(target.id)"),
                 ("cgSet", "\(result.rawValue)"),
-                ("ok", result == .success ? "yes" : "no")
+                ("ok", succeeded ? "yes" : "no")
             ])
-            if GammaDiagnostics.isEnabled, let (readback, samples) = readTable(id) {
+            if GammaDiagnostics.isEnabled, let (readback, samples) = readTable(target.id) {
                 GammaDiagnostics.log("apply.readback", [
-                    ("display", "\(id)"),
+                    ("display", "\(target.id)"),
                     ("samples", "\(samples)"),
                     ("r", GammaDiagnostics.endpoints(readback.red)),
                     ("g", GammaDiagnostics.endpoints(readback.green)),
@@ -159,87 +197,29 @@ final class GammaController {
     }
 
     func restore() {
-        let displays = activeDisplays()
+        let targets = targets()
         writeCount += 1
-        GammaDiagnostics.log("restore.intent", [("displays", GammaDiagnostics.ids(displays))])
+        GammaDiagnostics.log("restore.intent", [("displays", GammaDiagnostics.ids(targets.map(\.id)))])
         CGDisplayRestoreColorSyncSettings()
-        probe(displays, phase: "after-restore-call")
-    }
-}
-
-/// Opt-in trace of the gamma pipeline, enabled only with `SANDIA_GAMMA_DIAG=1`
-/// (or `true`/`yes`). It writes one append-only log under the user's temporary
-/// directory and never changes what Sandia applies. Call it from the main
-/// thread, like the rest of the gamma code.
-enum GammaDiagnostics {
-    static let isEnabled: Bool = {
-        let value = ProcessInfo.processInfo.environment["SANDIA_GAMMA_DIAG"]?.lowercased()
-        return value == "1" || value == "true" || value == "yes"
-    }()
-
-    static var fileURL: URL {
-        FileManager.default.temporaryDirectory.appendingPathComponent("SandiaGammaDiagnostic.log")
-    }
-
-    private static let clockFormatter: ISO8601DateFormatter = {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return formatter
-    }()
-
-    private static let uptimeAtStart = ProcessInfo.processInfo.systemUptime
-
-    private static let handle: FileHandle? = {
-        guard isEnabled else { return nil }
-        let manager = FileManager.default
-        if !manager.fileExists(atPath: fileURL.path) {
-            manager.createFile(atPath: fileURL.path, contents: nil)
+        for target in targets {
+            guard let (tables, samples) = readTable(target.id) else { continue }
+            switch policy.recordRestore(read: tables, for: target.key) {
+            case .stillOwnTint:
+                // The restore did not displace our tint: this table is not a baseline.
+                GammaDiagnostics.log("restore.unchanged", [("display", "\(target.id)")])
+            case .adoptedReference(let adopted):
+                GammaDiagnostics.log("baseline.captured", [
+                    ("display", "\(target.id)"),
+                    ("phase", "after-restore-call"),
+                    ("samples", "\(samples)"),
+                    ("r", GammaDiagnostics.endpoints(adopted.red)),
+                    ("g", GammaDiagnostics.endpoints(adopted.green)),
+                    ("b", GammaDiagnostics.endpoints(adopted.blue))
+                ])
+            case .cleared:
+                break
+            }
         }
-        guard let handle = try? FileHandle(forWritingTo: fileURL) else { return nil }
-        _ = try? handle.seekToEnd()
-        return handle
-    }()
-
-    /// One line per event: `t=+1.234s at=... event=name key=value ...`.
-    static func log(_ event: String, _ fields: [(String, String)] = []) {
-        guard isEnabled, let handle else { return }
-        let elapsed = ProcessInfo.processInfo.systemUptime - uptimeAtStart
-        var line = "t=+\(String(format: "%.3f", elapsed))s"
-        line += " at=\(clockFormatter.string(from: Date()))"
-        line += " event=\(event)"
-        for (key, value) in fields {
-            line += " \(key)=\(value)"
-        }
-        line += "\n"
-        if let data = line.data(using: .utf8) {
-            try? handle.write(contentsOf: data)
-        }
-    }
-
-    /// Run header: the app build, the OS and the file being written.
-    static func session(capacity: UInt32) {
-        guard isEnabled else { return }
-        let info = Bundle.main.infoDictionary
-        log("session", [
-            ("app", info?["CFBundleShortVersionString"] as? String ?? "unknown"),
-            ("build", info?["CFBundleVersion"] as? String ?? "unknown"),
-            ("macos", ProcessInfo.processInfo.operatingSystemVersionString),
-            ("pid", "\(ProcessInfo.processInfo.processIdentifier)"),
-            ("capacity", "\(capacity)"),
-            ("file", fileURL.path)
-        ])
-    }
-
-    static func endpoints(_ values: [CGGammaValue]) -> String {
-        guard let first = values.first, let last = values.last else { return "none" }
-        return String(format: "%.6f..%.6f", Double(first), Double(last))
-    }
-
-    static func rgb(_ value: RGB) -> String {
-        String(format: "%.6f/%.6f/%.6f", value.red, value.green, value.blue)
-    }
-
-    static func ids(_ displays: [CGDirectDisplayID]) -> String {
-        displays.isEmpty ? "none" : displays.map(String.init).joined(separator: ",")
+        probe(targets.map(\.id), phase: "after-restore-call")
     }
 }

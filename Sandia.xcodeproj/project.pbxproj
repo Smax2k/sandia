@@ -16,9 +16,12 @@
 		3098D41712E55B4FFE9FFDFA /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 441165C2F5908FFDC80A1710 /* Localization.swift */; };
 		3A978281705DBA15CBE4B372 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E377FB5854F096B97DF1CCC2 /* Preferences.swift */; };
 		40F57776679A01F08B3FB147 /* SandiaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17967863D1BB03CE036C3F2 /* SandiaState.swift */; };
+		4269208527C6AFF4E00121A1 /* GammaReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF75156C8BC82D9E9A914591 /* GammaReference.swift */; };
 		4607876D3E6EA01FB5720F6C /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EB190D2ADEE8D8B9D9F9B8 /* ScheduleTests.swift */; };
 		53AAD645010F9EBD08C669A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C70E0CD48258AE85886E7B73 /* Localizable.strings */; };
 		5AF8270A4644DFF9C078FB93 /* ColorTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF61B9564E046B21D3C248D /* ColorTemperature.swift */; };
+		5BD5498ECCD007B71DC19B94 /* GammaReferencePolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D33F59C77DC22B900CB1E2 /* GammaReferencePolicyTests.swift */; };
+		615E0B3CCCBC39D51459D384 /* GammaDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374739F0853DDDDCE5062036 /* GammaDiagnostics.swift */; };
 		64F7DF636A21F081DE9803AD /* ScrollWheelSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2B83D515784F84FD296629 /* ScrollWheelSlider.swift */; };
 		6AFAE07DC1C7AA28B0C7B784 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A897F9D052FDE32883FEBE /* MenuController.swift */; };
 		70D76BC72E68C694B81222D5 /* CurveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196E4ED3F987995B15FA0ED1 /* CurveView.swift */; };
@@ -91,6 +94,7 @@
 		21A62D820636E4E184908239 /* ScrollAdjustment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAdjustment.swift; sourceTree = "<group>"; };
 		230AD51A1771A38891ED80F1 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		2ECE1AF67CB0273D675B2139 /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
+		374739F0853DDDDCE5062036 /* GammaDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GammaDiagnostics.swift; sourceTree = "<group>"; };
 		441165C2F5908FFDC80A1710 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		48B9F55A0A7266440E0F6377 /* Sandia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sandia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		496829B11D3D860AD3A213B5 /* FilterTint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTint.swift; sourceTree = "<group>"; };
@@ -111,6 +115,8 @@
 		B08F13023A53B6614EFE2B10 /* AdvancedFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedFilterView.swift; sourceTree = "<group>"; };
 		B3A897F9D052FDE32883FEBE /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		B423C67A19B45E593101B2AC /* ScrollAdjustmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollAdjustmentTests.swift; sourceTree = "<group>"; };
+		B5D33F59C77DC22B900CB1E2 /* GammaReferencePolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GammaReferencePolicyTests.swift; sourceTree = "<group>"; };
+		BF75156C8BC82D9E9A914591 /* GammaReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GammaReference.swift; sourceTree = "<group>"; };
 		C9E222C20F7D9363235CFE80 /* ColorTemperatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTemperatureTests.swift; sourceTree = "<group>"; };
 		C9EB190D2ADEE8D8B9D9F9B8 /* ScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
 		D5FFB2A041BCAF25AC4FD67D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -164,6 +170,7 @@
 			children = (
 				0AF61B9564E046B21D3C248D /* ColorTemperature.swift */,
 				496829B11D3D860AD3A213B5 /* FilterTint.swift */,
+				BF75156C8BC82D9E9A914591 /* GammaReference.swift */,
 				F17967863D1BB03CE036C3F2 /* SandiaState.swift */,
 				894530263FE43BBA89FA28D1 /* Schedule.swift */,
 				21A62D820636E4E184908239 /* ScrollAdjustment.swift */,
@@ -186,6 +193,7 @@
 			children = (
 				C9E222C20F7D9363235CFE80 /* ColorTemperatureTests.swift */,
 				6BD83AB84858E120DDE6DF77 /* FilterTintTests.swift */,
+				B5D33F59C77DC22B900CB1E2 /* GammaReferencePolicyTests.swift */,
 				D9C71C6F74E1CEC97FB13B19 /* SandiaStateTests.swift */,
 				C9EB190D2ADEE8D8B9D9F9B8 /* ScheduleTests.swift */,
 				B423C67A19B45E593101B2AC /* ScrollAdjustmentTests.swift */,
@@ -213,6 +221,7 @@
 				196E4ED3F987995B15FA0ED1 /* CurveView.swift */,
 				2ECE1AF67CB0273D675B2139 /* Engine.swift */,
 				83A08777A473600D94D2FFBC /* GammaController.swift */,
+				374739F0853DDDDCE5062036 /* GammaDiagnostics.swift */,
 				845D57C676B82BD57BEE7D2C /* KeyboardBacklight.swift */,
 				441165C2F5908FFDC80A1710 /* Localization.swift */,
 				744E0018CB9B46271D3276B0 /* LoginItem.swift */,
@@ -359,6 +368,7 @@
 			files = (
 				C32D16AD4C53A9FD66D8288A /* ColorTemperatureTests.swift in Sources */,
 				915F858D4370CFA3AEA7A521 /* FilterTintTests.swift in Sources */,
+				5BD5498ECCD007B71DC19B94 /* GammaReferencePolicyTests.swift in Sources */,
 				D1862336F551FEE27008DE10 /* SandiaStateTests.swift in Sources */,
 				4607876D3E6EA01FB5720F6C /* ScheduleTests.swift in Sources */,
 				FC863687711057A37DE6D69D /* ScrollAdjustmentTests.swift in Sources */,
@@ -376,6 +386,7 @@
 				70D76BC72E68C694B81222D5 /* CurveView.swift in Sources */,
 				20BA50D11A195548815ECB27 /* Engine.swift in Sources */,
 				769A3EA3CBC89B1626E73AD9 /* GammaController.swift in Sources */,
+				615E0B3CCCBC39D51459D384 /* GammaDiagnostics.swift in Sources */,
 				0F56488FA99D2CC00E2158EE /* KeyboardBacklight.swift in Sources */,
 				3098D41712E55B4FFE9FFDFA /* Localization.swift in Sources */,
 				978085F9DA407E6887FB4B6E /* LoginItem.swift in Sources */,
@@ -393,6 +404,7 @@
 			files = (
 				5AF8270A4644DFF9C078FB93 /* ColorTemperature.swift in Sources */,
 				AAA0DF97E5E8D46E285696BF /* FilterTint.swift in Sources */,
+				4269208527C6AFF4E00121A1 /* GammaReference.swift in Sources */,
 				40F57776679A01F08B3FB147 /* SandiaState.swift in Sources */,
 				1430CF47211B81F467BAE170 /* Schedule.swift in Sources */,
 				EC0FDCE4580BED2F2AA05E9F /* ScrollAdjustment.swift in Sources */,
