@@ -7,7 +7,7 @@ Sans demander d'autorisation, pour que Jonathan puisse tester tout de suite :
 1. Lancer les tests : `swift test`.
 2. Construire l'app : `xcodebuild -project Sandia.xcodeproj -scheme Sandia -configuration Debug -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build`.
 3. Quitter Sandia s'il tourne (`pkill -x Sandia`), ce qui restaure le gamma de l'écran.
-4. Remplacer `/Applications/Sandia.app` par l'app construite (`ditto <build>/Sandia.app /Applications/Sandia.app`), puis la relancer avec `open /Applications/Sandia.app`.
+4. Déplacer l'ancienne `/Applications/Sandia.app` dans une sauvegarde, puis copier l'app construite avec `ditto <build>/Sandia.app /Applications/Sandia.app` et la relancer avec `open /Applications/Sandia.app`. Ne pas superposer les bundles : des fichiers Debug résiduels peuvent invalider la signature d'une Release. Vérifier la signature après copie ; supprimer la copie temporaire seulement après succès, sans supprimer la sauvegarde d'origine conservée pour retour arrière.
 5. Dire à Jonathan que l'app est remplacée, avec la version et l'heure.
 
 Le remplacement de l'app dans `/Applications` est autorisé en permanence ; ne pas redemander. Aucune notarisation, aucun DMG, aucune release pour un simple test.
