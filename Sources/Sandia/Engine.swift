@@ -110,6 +110,10 @@ final class Engine {
             resolved = ResolvedState(mode: .scheduled, rgb: ColorTemperature.rgb(kelvin: previewKelvin), kelvin: previewKelvin)
             previewing = true
         }
+        // Exactly once, on the final look: the preview and the schedule carry
+        // the same advanced tint. Disabled, paused and darkroom bypass it in
+        // `applyingFilterTint`.
+        resolved = resolved.applyingFilterTint(preferences.filterTint)
         return (resolved, previewing)
     }
 

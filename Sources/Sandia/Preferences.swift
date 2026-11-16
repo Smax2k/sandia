@@ -23,6 +23,10 @@ final class Preferences: ObservableObject {
     @Published var nightKelvin: Double { didSet { defaults.set(nightKelvin, forKey: Key.nightKelvin) } }
     @Published var darkroomBrightness: Double { didSet { defaults.set(darkroomBrightness, forKey: Key.darkroomBrightness) } }
 
+    /// Advanced red–amber axis, 0 = untouched. New key: an existing install
+    /// reads the default and keeps its current rendering until it is changed.
+    @Published var filterTint: Double { didSet { defaults.set(filterTint, forKey: Key.filterTint) } }
+
     /// Fixed hours or civil twilight. Stored as its raw value.
     @Published var scheduleMode: ScheduleMode {
         didSet { defaults.set(scheduleMode.rawValue, forKey: Key.scheduleMode) }
@@ -48,6 +52,7 @@ final class Preferences: ObservableObject {
         static let dayKelvin = "dayKelvin"
         static let nightKelvin = "nightKelvin"
         static let darkroomBrightness = "darkroomBrightness"
+        static let filterTint = "filterTint"
         static let scheduleMode = "scheduleMode"
         static let latitude = "latitude"
         static let longitude = "longitude"
@@ -74,6 +79,8 @@ final class Preferences: ObservableObject {
         dayKelvin = defaults.object(forKey: Key.dayKelvin) as? Double ?? fallback.dayKelvin
         nightKelvin = defaults.object(forKey: Key.nightKelvin) as? Double ?? fallback.nightKelvin
         darkroomBrightness = defaults.object(forKey: Key.darkroomBrightness) as? Double ?? 0.7
+        filterTint = FilterTint.clamped(defaults.object(forKey: Key.filterTint) as? Double
+                                        ?? FilterTint.neutral)
         scheduleMode = (defaults.string(forKey: Key.scheduleMode)).flatMap(ScheduleMode.init(rawValue:)) ?? .fixed
         latitude = defaults.object(forKey: Key.latitude) as? Double
         longitude = defaults.object(forKey: Key.longitude) as? Double

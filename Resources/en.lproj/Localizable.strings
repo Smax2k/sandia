@@ -27,3 +27,12 @@
 
 "Temperature curve over 24 hours" = "Temperature curve over 24 hours";
 "Night from %@ to %@, %@. Day %@." = "Night from %@ to %@, %@. Day %@.";
+
+/* Advanced filter. */
+
+"Advanced settings" = "Advanced settings";
+"Tint" = "Tint";
+"Red" = "Red";
+"Amber" = "Amber";
+"Reset" = "Reset";
+"The main slider still sets the intensity; at 0 % this has no effect." = "The main slider still sets the intensity; at 0 % this has no effect.";
